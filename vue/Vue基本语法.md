@@ -62,16 +62,16 @@ index.html
 ```
      自定义属性v-bind:title可以 绑定 原生属性title  使得title的值取决于v-bind:title 这个自定义属性所对应的值 这个变量所存储的值。
 
-### 举一反三
+#### 举一反三
 
-#### 如果想绑定 placeholder="账号" 
+##### 如果想绑定 placeholder="账号" 
      v-bind:placeholder="placeHolder" 
      data:{placeHolder:'账号'}
 
-#### 如果想绑定 class='box' 
+##### 如果想绑定 class='box' 
      v-bind:class="myclass"
      data:{myclass:'box'}
 
-#### 如果还想绑定其他的原生属性 请写成 v-bind:原生属性="data变量"
+##### 如果还想绑定其他的原生属性 请写成 v-bind:原生属性="data变量"
 
 
