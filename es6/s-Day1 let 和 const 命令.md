@@ -358,14 +358,14 @@ es5 中只有2种 分别是 var 和 function
 es6 中 除了 var 和 function 还有
 let、const
 import、class （这2个后面有介绍）
-共六中
+共六种:
 
-1、var
-2、function
-3、const
-4、let
-5、import
-6、class
+    1、var
+    2、function
+    3、const
+    4、let
+    5、import
+    6、class
 
 ## 顶层对象的属性 
 
@@ -374,7 +374,7 @@ import、class （这2个后面有介绍）
 在浏览器环境 window 就是顶层对象 (但是这被视为js设计中的败笔)
 在node环境中 global 是顶层对象 (因为node没有window对象)
 
-es5 中 顶层对象的__属性__与全局变量是__等价的__
+es5 中 顶层对象的 __属性__与全局变量是 __等价的__
 
 es6 中 为了挽救这个败笔 同时兼容老代码 规定 var 和 function 声明的全局变量 仍然 是顶层对象的属性
 但是 let、const、import、class 声明的全局变量将不属于顶层对象的属性。
@@ -395,7 +395,7 @@ console.log(window.b) // undefined
 
 __node 里的顶层对象是global__ 但是其他环境都没有global对象。
 
-为了能使同一段代码能在各个环境都能取到顶层对象 一般用 __this__。 但那是有__局限性__。
+为了能使同一段代码能在各个环境都能取到顶层对象 一般用 __this__。 但那是有 __局限性__。
 
 目前有2种方法可以勉强拿到
 ```js
