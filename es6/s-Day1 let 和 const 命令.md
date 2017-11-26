@@ -356,8 +356,11 @@ foo.name = 'zhangsan'  // Cannot add property name, object is not extensible 不
 es5 中只有2种 分别是 var 和 function
 
 es6 中 除了 var 和 function 还有
+
 let、const
+
 import、class （这2个后面有介绍）
+
 共六种:
 
     1、var
