@@ -274,7 +274,7 @@ if (true)
 
 ## do 表达式 （提案）
 块级作用域没有返回值
-do 表达式 是的它有返回值
+do 表达式 使得它有返回值
 ```js
     {
         let a = 1;
@@ -291,9 +291,9 @@ do 表达式 是的它有返回值
 # const 命令
 const声明一个只读的常量。一旦声明，常量的值就不能改变。
 ```js
-consct PI = 3.141592635
+const PI = 3.141592653
 
-PI // 3.141592635
+PI // 3.141592653
 
 PI = 3 ; 
 // TypeError: Assignment to constant variable. 类型错误 赋值给常量
@@ -334,7 +334,7 @@ const a = 2; //报错 Identifier 'a' has already been declared  标识符 ‘a�
 ```js
     const foo = {};
     foo.name = 'zhangsan';
-    console.log(foo.name) // xhangsan
+    console.log(foo.name) // zhangsan
     foo.name = 'lisi';
     console.log(foo.name) // lisi
 
