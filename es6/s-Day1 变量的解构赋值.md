@@ -180,8 +180,8 @@ msg // "Something went wrong"
 ```js
 let arr = ['first','middle','last'];
 let { 0 : first, [arr.length-1] : last } = arr
-first // 1
-last // 3
+first // first
+last // last
 ```
 
 ## 字符串的解构赋值
