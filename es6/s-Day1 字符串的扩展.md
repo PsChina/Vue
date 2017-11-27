@@ -164,4 +164,103 @@ for (let char of s) {
 // '6'
 ```
 
+## at()  (提案)
+ES5 对字符串对象提供charAt方法，返回字符串给定位置的字符。该方法不能识别码点大于0xFFFF的字符。
+
+```js
+'abc'.charAt(0) // 'a'
+'𠮷'.charAt(0)  // '\uD842'
+```
+
+目前，有一个提案，提出字符串实例的at方法，可以识别 Unicode 编号大于0xFFFF的字符，返回正确的字符。
+```js
+'abc'.at(0) // 'a'
+'𠮷'.at(0)  // '𠮷'
+```
+
+## normalize()
+
+```js
+'\u01D1'==='\u004F\u030C' //false
+
+'\u01D1'.length // 1
+'\u004F\u030C'.length // 2
+```
+
+```js
+'\u01D1'.normalize() === '\u004F\u030C'.normalize()
+// true
+```
+
+## includes(), startsWith(), endsWith()
+
+  includes()：返回布尔值，表示是否找到了参数字符串。
+
+  startsWith()：返回布尔值，表示参数字符串是否在原字符串的头部。
+
+  endsWith()：返回布尔值，表示参数字符串是否在原字符串的尾部。
+
+
+## repeat(),padStart(),padEnd()
+
+  repeat方法返回一个新字符串，表示将原字符串重复n次。
+```js
+  '12'.padStart(10, 'YYYY-MM-DD') // "YYYY-MM-12"
+  '09-12'.padStart(10, 'YYYY-MM-DD') // "YYYY-09-12"
+
+  'x'.padEnd(5, 'ab') // 'xabab'
+  'x'.padEnd(4, 'ab') // 'xaba'
+```
+
+## 模板字符串
+
+```js
+  let name = 'Bob', time = 'today';
+  `Hello ${name}, how are you ${time}?`
+
+  let string = ` I love \`js\` `;
+  let a = 1;
+  let b = 2;
+  let result =  `a plus b equal to ${a+b}`
+
+```
+### 引用模板字符串本身
+```js
+    let strFnValue = 'return' + '`Hello ${name}`'
+
+    let sayHello = new Function('name',strFnValue);
+```
+
+## 模版编译
+
+```js
+  let template = `
+  <ul>
+    <% for(let i = 0; i < arr.length ; i++ ) {%>
+    <li> <%=arr[i]%> </li>
+    <% } %>
+  </ul>
+  `
+  //以下省略
+```
+
+## 标签模板
+
+```js
+alert`123`;
+//登同于
+alert(123);
+```
+
+```js
+let a = 5;
+let b = 10;
+
+function tag(one,two,three){
+  console.log(arguments)
+}
+tag`Hello ${a+b} world ${a*b}`;
+```
+
+
 
