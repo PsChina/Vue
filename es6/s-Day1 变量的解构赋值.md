@@ -146,7 +146,7 @@ let { name } = { name: 'lisi' } //等价于 let { name: name } = { name: 'lisi' 
 
     console.log(x) // => 'Hello'
     console.log(y) // => 'es6'
-    conosle.log(key) // => 报错 key is undefined
+    console.log(key) // => 报错 key is undefined
 
 //----------------------------------------------------------
 
