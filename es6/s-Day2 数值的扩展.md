@@ -41,7 +41,7 @@ Number.isNaN(0) // false 其他非NaN一律false
 判断一个数字是否为整数 （字符串除外）
 ```js
 Number.isInteger(1); //true
-Number.isInteger('1') //true
+Number.isInteger('1') //false
 ```
 
 ## Number.EPSILON
