@@ -55,7 +55,7 @@ Number.EPSILON可以用来设置“能够接受的误差范围”。
 比如，误差范围设为 2 的-50 次方（即Number.EPSILON * Math.pow(2, 2)），即如果两个浮点数的差小于这个值，我们就认为这两个浮点数相等。
 
 ```js
-    function numberIsEquel(a,b){
+    function numberIsEqual(a,b){
         return Math.abs(a - b) < Number.EPSILON * Math.pow(2,2);
     }
 ```
