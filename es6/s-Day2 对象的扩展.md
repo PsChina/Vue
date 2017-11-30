@@ -87,7 +87,7 @@ target // {a:1, b:2, c:3}
 ### Object.assign 是同名属性替换的
 意思是会覆盖原来已经存在的属性的属性值。
 
-##可枚举
+## 可枚举
 对象的每个属性都有一个描述对象（Descriptor），用来控制该属性的行为。Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象。
 ```js
 let obj = { foo: 123 };
