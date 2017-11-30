@@ -9,6 +9,10 @@
 0o010 === 8 // true
 0x010 === 16 // true
 ```
+## 指数运算符 **
+```js
+2**3 == Math.pow(2,3);
+```
 
 ## Number.isFinite(), Number.isNaN()
 
@@ -82,6 +86,95 @@ Number.MIN_SAFE_INTEGER === -9007199254740991
 Number.isSafeInterger() //用来判断一个 __整数__ 是否落在这个范围之内
 ```
 
+## Math 对象的扩展
+
+
+### Math.trunc()
+去除小数部分
+```js
+Math.trunc(4.9) // 4
+Math.trunc(-4.1) // -4
+```
+
+### Math.sign()
+用于判断一个数到底是正数、负数、还是零 还是非数值
+```js
+Math.sign(-5) // -1
+Math.sign(0) // +0
+Math.sign(-0) // -0
+Math.sign(NaN) // NaN
+Math.sign('9')  // +1
+Math.sign('foo')  // NaN
+```
+
+### Math.cbrt()
+计算立方根
+```js
+Math.cbrt('8') // 2
+Math.cbrt('hello') // NaN
+```
+
+## Math.clz32()
+计算这个数字用01表示时有多少个无意义的0
+```js
+Math.clz32(0) // 32
+Math.clz32(1) // 31
+Math.clz32(1000) // 22
+Math.clz32(1<<1) // 30
+//对于小数，Math.clz32方法只考虑整数部分。
+Math.clz32(3.2) // 30
+```
+## Math.imul() 
+计算结果超精度是能正确返回值
+
+## Math.imul() 
+Math.fround 方法返回一个数的单精度浮点数形式。
+```js
+Math.fround(1.337) // 1.3370000123977661
+```
+
+## Math.hypot()
+计算返回所有参数的平方和的算术平方根
+```js
+Math.hypot(3, 4);        // 5  勾股定理
+Math.hypot(3, 4, 5);     // 7.0710678118654755
+```
+
+## 对数方法4个(请查看es6入门)
+
+## Math.signbit()  (提案)
+Math.sign()用来判断一个值的正负，但是如果参数是-0，它会返回-0。
+
+Math.signbit() 用于判断是否设置了符号。
+
+## Integer 数据类型 (提案)
+在数字后边加n 来表示整型数据
+```js
+1n //十进制
+0b1101n // 二进制
+0o777n // 八进制
+0xFFn // 十六进制
+
+
+1n + 2n // 3n
+
+typeof 123n
+// 'integer'
+
+
+1n + 1 //隐式转换 报错
+// 报错
 
 
 
+// 相等运算符（==）会改变数据类型，也是不允许混合使用。
+0n == 0
+// 报错 TypeError
+
+0n == false
+// 报错 TypeError
+
+//精确相等运算符（===）不会改变数据类型，因此可以混合使用。
+0n === 0
+// false
+```
