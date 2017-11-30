@@ -100,8 +100,52 @@ Object.getOwnPropertyDescriptor(obj, 'foo')
 //  }
 ```
 
-## 属性的遍历6中(看es6入门)
+## 属性的遍历6种(看es6入门)
 
 ## super 关键字
+```js
+    var father = {
+        fn:function(){
+            console.log('es5 fn')
+        },
+        name:'王武'
+    }
+
+
+    let sun = {
+        getFatherName(){
+            console.log(super.name);
+        },
+        getOwnName(){
+            console.log(this.name);
+        },
+        name:'王麻子'
+    }
+
+    Object.setPrototypeOf(sun,father);
+
+    sun.getOwnName();
+    sun.getFatherName();
+```
 
 ## 扩展运算符 ... (和 函数的扩展rest参数一样)
+
+```js
+
+    let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 }; // ...只能放在最后
+    x // 1
+    y // 2
+    z // { a: 3, b: 4 }
+
+//---------------------------
+    let z = { a: 3, b: 4 };
+    let n = { ...z }; //对于已存在的对象z ...可以不放在最后
+    n // { a: 3, b: 4 }
+```
+
+## null传导运算符(提案)
+安全的访问属性
+```js
+const firstName = message?.body?.user?.firstName  //安全
+const lastName = message.body.user.lastName //不安全
+```

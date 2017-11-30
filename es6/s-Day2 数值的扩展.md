@@ -60,7 +60,7 @@ Number.EPSILON可以用来设置“能够接受的误差范围”。
     }
 ```
 
-## 安全整数 和 Number.isSafeInterger()
+## 安全整数 和 Number.isSafeInteger()
 
 JavaScript 能够准确表示的 __整数__ 范围 在 -2^53 到 +2^53 不包含2端 超过这个范围无法精确表示。
 
