@@ -11,7 +11,7 @@
 ```
 ## 指数运算符 **
 ```js
-2**3 == Math.pow(2,3);
+2**3 == Math.pow(2,3); // true
 ```
 
 ## Number.isFinite(), Number.isNaN()
@@ -127,7 +127,7 @@ Math.clz32(3.2) // 30
 ## Math.imul() 
 计算结果超精度是能正确返回值
 
-## Math.imul() 
+## Math.fround()
 Math.fround 方法返回一个数的单精度浮点数形式。
 ```js
 Math.fround(1.337) // 1.3370000123977661
