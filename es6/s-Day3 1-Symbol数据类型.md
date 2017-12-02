@@ -1,4 +1,4 @@
-#Symbol
+# Symbol
 
 JavaScript 语言的第七种数据类型。
 
