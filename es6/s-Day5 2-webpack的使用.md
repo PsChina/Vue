@@ -141,7 +141,7 @@ module.exports = {
         new UglifyJsPlugin(),  // 压缩js
         new webpack.HotModuleReplacementPlugin(), // 热替换
         new HtmlWebpackPlugin({ //
-            template:'./index.html' // 获取html 将js 链入js 并且配合devServer 启动热替换
+            template:'./index.html' // 获取html 将js 链入html
         })
     ],
     devServer:{
