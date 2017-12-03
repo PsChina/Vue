@@ -57,3 +57,83 @@ promise.then(function(msg){
 })
 ```
 
+## demo1
+```js
+//封装ajax
+
+const ajax = function(obj){
+
+    const request = new XMLHttpRequest(); // ActiveXObject('Microsoft.XMLHTTP') 只存在于IE6 IE5 然而这两种浏览器已经没人用了。
+
+    request.open(obj['method'],obj['url']);
+
+    const promise = new Promise((resolve,reject)=>{
+        request.onreadystatechange = function(){
+            if(this.readyState !== 4){
+                return
+            }
+            if(this.status == 200 ){
+                resolve(this.response);
+            }else {
+                reject(this.responseText);
+            }
+        }
+    });
+    
+    request.send(obj['data']);
+
+    return promise;
+}
+```
+
+## demo2
+```js
+let loadImageAsync = (url)=>{
+    
+    return new Promise((resolve,reject)=>{
+
+        const image = new Image()
+
+        image.onload = () => {
+            resolve(image);
+        }
+
+        image.onerror = () => {
+            reject(new Error('Can not load image at' + url))
+        }
+
+        image.src = url;
+
+    })
+    
+}
+
+let loadImagesAsync = (...list)=>{ // 加载多张图片
+
+    if(list[0] instanceof Array){ // 支持传入数组参数
+        list = list[0] 
+    } 
+
+    return new Promise((resolve,reject)=>{
+
+        let [imageCount,imageArr] = [list.length,[]];
+        
+            list.forEach((value,index,arr)=>{
+
+                loadImageAsync(value)
+                .then((image)=>{
+                    imageArr.push(image);
+                    if(imageArr.length == imageCount){ // 当所有图片加载完成再进行 resolve
+                        resolve(imageArr);
+                    }
+                },(error)=>{ // 只要一张图片加载失败就 执行 reject
+                    reject(error);
+                })
+            })
+
+    })
+
+
+}
+```
+
