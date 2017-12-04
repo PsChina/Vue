@@ -1,9 +1,30 @@
 # webpack 
 
-## 多入口的配置
+## 多入口多出口的配置
 
-## 多出口的配置
+```js
+module.exports = {
+    entry:{
+        jsfileName1:'./js1.js',
+        jsfileName2:'./js2.js'
+    },
+    output:{
+        filename:'[name].js',
+        path:__dirname+'/dist' // 输出的目录  var path = require('path')   path.resolve(__dirname,'/dist')
+        }
+}
+```
 
+## 多入口单出口的配置
+```js
+module.exports = {
+    entry:['./js1.js','./js2.js'],
+    output:{
+        filename:'bundle.js',
+        path:__dirname+'/dist' // 输出的目录  var path = require('path')   path.resolve(__dirname,'/dist')
+        }
+}
+```
 ## demo
 ```js
 var webpack = require('webpack') // 本地安装webpack
