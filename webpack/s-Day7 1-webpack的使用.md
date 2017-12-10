@@ -75,7 +75,7 @@ module.exports = {
     devServer:{
         port:8080,  // devServer 本地服务端口号
         hot:true, // 热替换开关
-        inline:true, // 热替换开关
+        inline:true, // --inline选项会自动把webpack-dev-server客户端加到webpack的入口文件配置中。
         open:'http://localhost:8080', // 自动打开浏览器窗口
         contentBase:__dirname // 服务器根目录
     }
