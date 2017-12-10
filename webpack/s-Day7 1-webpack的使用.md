@@ -35,7 +35,7 @@ var path = require('path')
 module.exports = {
     entry:'./enrty.js',
     output:{  // 我们的项目 会在 打包压缩之后 输出的路径 名字
-        path:__dirname+'/dist/',   // 路径  就是你的最终的产品  
+        path:__dirname+'/dist/', // 路径  就是你的最终的产品  
         filename:'bundle.js' // js 的名字
     },
     module:{
@@ -48,18 +48,18 @@ module.exports = {
         new UglifyJsPlugin(),  // 压缩js
         new webpack.HotModuleReplacementPlugin(), // 热替换
         new HtmlWebpackPlugin({ //
-            title:'webpackLesson',
+            title:'webpackLesson',  // .html 文件的 title 里写 <%= htmlWebpackPlugin.options.title %>
             filename:'index.html', // 如果不写默认就是它
             template:'./index.html', // 获取html 将bundle.js 链入 
             inject:true, //默认为 true script标签位于html文件的 body 底部 填 body 和 填true 效果一样 head=> script 标签位于 head 标签内 false => 不生成script 标签
             minify:{
-              removeAttributeQuotes: true // 移除属性的引号
+              removeAttributeQuotes: true // 移除属性的引号  https://github.com/kangax/html-minifier#options-quick-reference 可以查看完整选项
             },
             hash:true, //hash选项的作用是 给生成的 js 文件一个独特的 hash 值，该 hash 值是该次 webpack 编译的 hash 值。默认值为 false 。
             showErrors:true, // 默认就是true  显示错误信息
             cache:true, // true 表示只有在内容变化时才生成一个新的文件。
             // chunks:['bundle.js','other.js'] 多入口的时候 会生成多个js  你可以通过这个字段 来选择需要将哪些js 引入你的html 默认是全部引入 所以一般不配置
-            excludeChunks:['webpack.config.js'],//这个字段的意思是不包含某个js
+            excludeChunks:['webpack.config.js'],// 这个字段的意思是不包含某个js
             chunksSortMode:'dependency', // 按照依赖循序引入
             /*
             这个选项决定了 script 标签的引用顺序。默认有四个选项，'none', 'auto', 'dependency', '{function}'。
