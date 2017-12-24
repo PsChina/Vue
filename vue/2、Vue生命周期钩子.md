@@ -60,7 +60,7 @@
         deactivated() {
             console.log('失效')
         },
-        errorCaptured(event,vm,errorType){  // 它只能捕获子组件的错误 自身的错误无法被捕获到只能被父组件捕获到
+        errorCaptured(event,$$vm,errorType){  // 它只能捕获子组件的错误 自身的错误无法被捕获到只能被父组件捕获到
             console.log('出错了')
             if(1/*已经解决*/){
                 console.log(errorType)
@@ -73,7 +73,7 @@
     })
 
     let el = '#app'
-    let vm = new Vue({
+    let $$vm = new Vue({
         el,
         data() {
             return { // 它 是一个容器 它下面的属性 会挂载在 Vue 实例下
@@ -121,19 +121,89 @@
         destroyed() {
             console.log('已经销毁')
         },
-        errorCaptured(event,vm,error){ // 子组件 发生错误的时候会被调用 如果子组件 该函数 return false 就不会被父组件捕获
-            console.log('error:',vm);
+        errorCaptured(event,$$vm,error){ // 子组件 发生错误的时候会被调用 如果子组件 该函数 return false 就不会被父组件捕获
+            console.log('error:',$$vm);
         }
     })
-    vm.msg = 'Hello nextTick';
-    console.log(vm.$el.textContent)
+    $$vm.msg = 'Hello nextTick';
+    console.log($$vm.$el.textContent)
     // alert();
     Vue.nextTick(function(){
-        console.log(vm.$el.textContent)
+        console.log($$vm.$el.textContent)
     })
     setTimeout(function(){
-        console.log(vm.$el.textContent)
+        console.log($$vm.$el.textContent)
     },0)
     
 </script>
+```
+
+```js
+//生命周期函数的原理
+class Vue{
+    static $mount(target,el){
+        Vue.init(target,el)
+    }
+    static init($$vm,el){
+        $$vm.obj.el = $$vm.obj.el ? $$vm.obj.el : el
+        if($$vm.obj.el){ // 当 el 存在的情况 创建vue实例。
+
+            $$vm.getActivityFn($$vm.obj);
+
+            $$vm.beforeCreate();
+            // 创建dom
+            $$vm.createElement($$vm.obj);
+
+            $$vm.created();
+
+            $$vm.beforeMount();
+
+            const fatherView = document.getElementById($$vm.obj.el.substring(1));
+            // 挂载
+            fatherView.appendChild($$vm.$el);
+
+            $$vm.mounted(); 
+        }
+    }    
+    constructor(obj) {
+        this.obj = obj
+        Vue.init(this,obj.el);
+    }
+    getActivityFn(obj){
+        if(obj.beforeCreate){
+            this.beforeCreate = obj.beforeCreate;
+        }
+        if(obj.created){
+            this.created = obj.created;
+        }
+        if(obj.beforeMount){
+            this.beforeMount = obj.beforeMount;
+        }
+        if(obj.mounted){
+            this.mounted = obj.mounted;
+        }
+        //...
+    }
+    compile(obj){
+        //...创建dom
+        return document.createElement('div') // 假装创建了一个div
+    }
+    createElement(obj) {
+        console.log('创建dom')
+        this.$el = this.compile(obj);
+    }
+    beforeCreate() {
+
+    }
+    created() {
+
+    }
+    beforeMount() {
+
+    }
+    mounted() {
+
+    }
+    //...
+}
 ```
