@@ -71,7 +71,7 @@ new Promise((resolve)=>{
 ```
 
 ### all
-用于将__多个__promise实例包装成__一个新的__promise实例。
+用于将 __多个__ promise实例包装成 __一个新的__ promise实例。
 
  1、它可以接收多个对象 就算对象不是promise对象。
 
@@ -80,7 +80,7 @@ new Promise((resolve)=>{
  3、如果所有的promise对象状态都为fulfilled 那么新的promise对象也会成为fulfilled状态。
 
  4、只要有一个对象是rejected状态那么新的promise对象就会变成rejected状态。
- 
+
 
 ## 实际案例
 
