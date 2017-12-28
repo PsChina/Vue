@@ -50,23 +50,34 @@ promise.then(function(result){},function(error){}) //第一个参数是成功的
  promise调用reject 的时候会调用then里面失败的回调。
 
 ### catch
- Promise.prototype.catch方法是.then(null, rejection)的别名。
+ Promise.prototype.catch方法是.then(null, rejection)的别名。 (用于捕捉错误)
+
+### done
+Promise 对象的回调链，不管以then方法或catch方法结尾，要是最后一个方法抛出错误，都有可能无法捕捉到（因为 Promise 内部的错误不会冒泡到全局）。因此，我们可以提供一个done方法，总是处于回调链的尾端，保证抛出任何可能出现的错误。
 
 ## promise的静态方法
 
+### reject
+  将非promise 对象转换为promise对象 状态为rejected
+  用法
+```js
+Promise.reject('hello'); // 用构造函数调用 而不是实例
+// 将一个hello 转换为promise对象
+
+new Promise((resolve,reject)=>{
+    reject('hello')
+})
+```
 ### resolve
- 将非promise 对象转换为promise对象
+ 将非promise 对象转换为promise对象 状态为 resolved
  用法 
 ```js
-Promise.resolve('hello');
+Promise.resolve('hello'); // 用构造函数调用 而不是实例
 // 将一个hello 转换为promise对象
 
 //上面的代码等价于
 new Promise((resolve)=>{
     resolve('hello')
-})
-.then((r)=>{
-   
 })
 ```
 
@@ -81,6 +92,14 @@ new Promise((resolve)=>{
 
  4、只要有一个对象是rejected状态那么新的promise对象就会变成rejected状态。
 
+### race
+用于将 __多个__ promise实例包装成 __一个新的__ promise实例。
+
+ 1、它可以接收多个对象 就算对象不是promise对象。
+
+ 2、如果对象不是promise他会把这个对象 用Promise.resolve 转换成promise对象。
+
+ 3、在所有的参数中最先成功或者失败的对象的状态会被 race 产生的新promise跟随，不管其他后完成的promise是个什么样子。
 
 ## 实际案例
 
