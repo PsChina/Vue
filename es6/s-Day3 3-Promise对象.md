@@ -20,7 +20,7 @@ Promise对象的状态改变，只有两种可能：
 
 2、从pending变为rejected。
 
-只要这两种情况发生，状态就凝固了，不会再变了，这时就称为 resolved（已定型）。
+只要这两种情况发生，状态就凝固了，不会再变了，这时就称为 resolved （__已定型__）。
 
 
 ## 基本用法
@@ -39,6 +39,43 @@ const promise = new Promise(fn)
 
 promise.then(function(result){},function(error){}) //第一个参数是成功的回调 第二个参数是失败的回调
 ```
+## promise的实例方法
+
+### then
+ 第一个参数是 成功的回调， 第二个参数是 失败的回调。
+ 用于注册 resolve 和 reject 的 __子函数__ 。 
+
+ 也就是说 
+ promise调用resolve的时候会调用then里面成功的回调。
+ promise调用reject 的时候会调用then里面失败的回调。
+
+### catch
+ Promise.prototype.catch方法是.then(null, rejection)的别名。
+
+## promise的静态方法
+
+### resolve
+ 将非promise 对象转换为promise对象
+ 用法 
+```js
+Promise.resolve('hello');
+// 将一个hello 转换为promise对象
+
+//上面的代码等价于
+new Promise((resolve)=>{
+    resolve('hello')
+})
+.then((r)=>{
+   
+})
+```
+
+### all
+ 用于将__多个__promise实例包装成__一个新的__promise实例。
+ 1、它可以接收多个对象 就算对象不是promise对象。
+ 2、如果对象不是promise他会把这个对象 用Promise.resolve 转换成promise对象。
+ 3、如果所有的promise对象状态都为fulfilled 那么新的promise对象也会成为fulfilled状态。
+ 4、只要有一个对象是rejected状态那么新的promise对象就会变成rejected状态
 
 ## 实际案例
 
