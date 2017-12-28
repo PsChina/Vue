@@ -4,6 +4,9 @@ class可以看作只是一个语法糖，它的绝大部分功能，ES5 都可�
 
 ## 基本用法
 
+### 必须使用new 调用
+### constructor 就是构造函数
+### class 声明的变量类型是function
 ```js
 class Point{ //声明一个类 => 点
     constructor(x,y){// 传入x,y 坐标  constrictor 等价于es5 的构造函数
@@ -19,9 +22,9 @@ class Point{ //声明一个类 => 点
 typeof Point // "function"
 Point === Point.prototype.constructor // true
 
-
+// 用class 定义的类 必须使用new 来调用 否则会报错 这是他与普通构造函数的区别
 // 报错
-var point = Point(2, 3);
+var point = Point(2, 3); // 没有使用new 调用
 
 // 正确
 var point = new Point(2, 3);
