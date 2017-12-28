@@ -110,11 +110,32 @@ class myClass {
 
 ```
 
+## 静态方法
+在其他语言里面称之为类方法 与之相对的是实例方法
+
+类方法是通过类名调用
+实例方法是通过实例调用
+
+在javascript中称之为 静态方法
+static
+```js
+
+class ArrayLike{ // 类数组
+    static from(){ // 静态方法 具体实现请查看下文
+
+    }
+    constructor(...args){
+
+    }
+}
+
+```
+
 ## 如何新建含有 iterator 接口的类 类似(Array 这种能被 for of 遍历的类)
 
 ```js
     class ArrayLike {
-        static fromArray(array){
+        static fromArray(array){ // 静态方法
             if(array instanceof Array){
                 return new ArrayLike(...array); 
             }else{
