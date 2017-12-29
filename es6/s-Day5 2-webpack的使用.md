@@ -20,11 +20,20 @@
 
   }
 
-####用es6来书写 webpack.config.babel.js
-  1、需要下载babel                  npm i babel
-  2、需要下载babel-preset-env       npm i babel-preset-env (为什么不是babel-preset-2015) 因为这个包只能编译es6 不能编译 es7 、 es8 甚至 9等等。
-  3、需要书写 .babelrc              touch .babelrc      内容是  { "presets":["env"] }   env 是 环境environment的缩写
-  4、需要下载 babel-core            npm i babel-core
+#### 用es6来书写 webpack.config.babel.js
+  1、npm i babel --save-dev
+
+  2、npm i babel-core --save-dev
+
+  3、npm i babel-preset-env --save-dev     (babel-preset-es2015 只支持es6转es5不支持es7 es8)
+
+  4、touch .babelrc
+
+  5、在 .babelrc 中写  { "presets":["env"] }
+
+  6、webpack.config.js => webpack.config.babel.js
+
+  7、把 require 换成 import from, module.exports 换成 export default , 可以使用其他的es6，7，8语法了
 
 ### entry (入口)
 
