@@ -2,6 +2,8 @@
     获取vue.js
     npm i vue --save-dev
 
+    https://cn.vuejs.org/ (官网的教程非常详细)
+
 ## 开始
 
     1、新建index.html
