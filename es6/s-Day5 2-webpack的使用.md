@@ -160,6 +160,7 @@ module.exports = {
         open:'http://localhost:8080', // 自动打开浏览器窗口
         contentBase:__dirname // 服务器根目录
     }
+    //devServer 中文介绍 http://www.css88.com/doc/webpack2/configuration/dev-server
 }
 
 ```
