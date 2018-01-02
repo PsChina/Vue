@@ -67,7 +67,13 @@ module.exports = {
             'dependency' 不用说，按照不同文件的依赖关系来排序。
             'auto' 默认值，插件的内置的排序方式。
             'none' 应该是你chunks 那个数组的顺序。
-            {function} 提供一个函数？但是函数的参数又是什么? 不太清楚...
+            {function} 提供一个函数
+            chunksSortMode: function (chunk1, chunk2) { // 多入口 多出口的依赖顺序。
+                var order = ['module3', 'module2','module1'];  // 这是你的顺序 这是你的 入口文件的 属性名[键名]
+                var order1 = order.indexOf(chunk1.names[0]);
+                var order2 = order.indexOf(chunk2.names[0]);
+                return order1 - order2 ;  
+            }            
             */      
             xhtml:false //一个布尔值，默认值是 false ，如果为 true ,则以兼容 xhtml 的模式引用文件。
         })
