@@ -127,8 +127,8 @@
     <div id="app" v-if="false"> 这个节点不会渲染 </div>
 ```
 
-## v-if-else
-    和 if else 一样
+## v-else-if
+    和 else if  一样
 ## v-else
     和 else 一样
 ## v-model
