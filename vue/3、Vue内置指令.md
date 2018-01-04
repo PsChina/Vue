@@ -224,3 +224,24 @@ demo：
 </div>
 ```
 不会显示，直到编译结束。
+
+## slot  (特殊属性 并不是内置指令)
+
+```html
+    <div id="app">
+        <test>  <!-- 你定义的组件  -->
+            <div slot="title">头部</div>   
+            <div slot="footer">脚部</div> 
+        </test>
+    </div>
+```
+
+```js
+    Vue.component('test',{
+        template:`<div>  
+                    <slot name="title"></slot>
+                     组件其他内容   
+                     <slot name="footer"></slot>    
+                  </div>`
+    })
+```
