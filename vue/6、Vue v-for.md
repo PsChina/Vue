@@ -78,6 +78,21 @@
     })    
 </script>
 ```
+### 特殊属性 key
+
+用于区分不同的dom元素需要用到 key 属性 所以key 属性应当给一个不重复的唯一值
+
+v-for 会智能的重用之前传染出来的dom元素来减少性能消耗
+
+但是这导致无法触发完整的声明周期函数 
+
+如果想要完整的生命周期 可以改变key 里面存储的值来达到彻底刷新dom的效果
+
+```html
+    <div v-for="(value,index) in array" :key="index">
+        <span>{{value}}</span>
+    </div>
+```
 
 ### 变异方法与非变异方法
 
