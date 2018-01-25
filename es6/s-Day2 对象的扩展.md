@@ -112,7 +112,7 @@ Object.getOwnPropertyDescriptor(obj, 'foo')
     }
 
 
-    let sun = {
+    let son = {
         getFatherName(){
             console.log(super.name);
         },
@@ -122,10 +122,10 @@ Object.getOwnPropertyDescriptor(obj, 'foo')
         name:'王麻子'
     }
 
-    Object.setPrototypeOf(sun,father);
+    Object.setPrototypeOf(son,father);
 
-    sun.getOwnName();
-    sun.getFatherName();
+    son.getOwnName();
+    son.getFatherName();
 ```
 
 ## 扩展运算符 ... (和 函数的扩展rest参数一样)
