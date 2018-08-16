@@ -1,9 +1,9 @@
-
+// 不去重
 function transformArrayToObject(arr=[], keyName){
     const obj = {};
-    for(let item of arr){
-        let index = arr.indexOf(item)
-        obj[`${keyName}[${index}]`] = item 
+    const length = arr.length
+    for(let i = 0; i<length; i++){
+        obj[`${keyName}[${i}]`] = arr[i];
     }
     return obj
 }
