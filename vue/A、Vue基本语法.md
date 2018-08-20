@@ -9,7 +9,7 @@
     1、新建index.html
     2、引入 vue
 
-## new一个Vue实例 以及 {{}}语法
+## new一个Vue实例 以及 {{}} mustache 语法
 
 ```html
     <div id="app" v-on:click="clickfn">  <!-- Vue 根元素不能是 html 或者body 所以我们找一个div来用 -->
