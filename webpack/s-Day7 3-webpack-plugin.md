@@ -1,5 +1,5 @@
 # webpackPlugin
-webpack plugin 带来了更强大的功能
+webpack plugin 带来了更强大的功能，某些内置插件已经被webpack4.x移除了请自行查看官网更新。
 
 ## commons-chunk-plugin 
 这个插件用于提取公共的 js
@@ -44,14 +44,44 @@ module.exports = {
 ## extract-text-webpack-plugin
 这个插件用于提取css 就是将css 从js里面分离出来
 
+见demo
+
 ## optimize-css-assets-webpack-plugin 
 这个插件用于将分离出来的css打包的
+```js
+var config = {
+    plugins:[
+            new OptimizeCssAssetsPlugin({
+                assetNameRegExp: /\.css$/g,
+                cssProcessor: require('cssnano'),
+                cssProcessorOptions: { discardComments: {removeAll: true } },
+                canPrint: true
+              }),
+            ]    
+}
+module.exports = config
+```
+
+## providePlugin
+这个插件用于在webpack中引入全局工具
+```js
+var config = {
+    plugins:[
+                new webpack.ProvidePlugin({
+                    '$': 'jquery',
+                    '_': 'lodash'
+                }
+            ]    
+}
+module.exports = config
+```
 
 demo
 ```js
 var  ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 var  HtmlWebpackPlugin = require('html-webpack-plugin')
 var  OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var  webpack = require('webpack')
 module.exports = {
     entry:'./assets/entry.js',
     output:{
@@ -82,7 +112,11 @@ module.exports = {
                 cssProcessor: require('cssnano'),
                 cssProcessorOptions: { discardComments: {removeAll: true } },
                 canPrint: true
-              })
+              }),
+        new webpack.ProvidePlugin({
+            '$': 'jquery',
+            '_': 'lodash'
+        })
     ],
     resolveLoader:{ // 当你在 loader 名的时候可以忽略 -loader 后缀 也就是是说 css-loader 可以被写成 css 
         moduleExtensions:['-loader']
