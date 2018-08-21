@@ -62,7 +62,7 @@ var config = {
 module.exports = config
 ```
 
-## providePlugin
+## ProvidePlugin
 这个插件用于在webpack中引入全局工具
 ```js
 var config = {
