@@ -18,13 +18,13 @@ function myAjax(obj,overTime){
 		clearInterval(timmer);
 		if(this.status===200){ // 并且状态为200 成功的时候
 			if(obj.success){
-				obj.success(this.responseText) //调用成功的回调			
+				obj.success(this.response) //调用成功的回调			
 			}
 		}else if(obj.error&&this.status>399){
 			if(obj.error){
 				obj.error(this.responseText) // 否则调用失败的
 			}
-		}
+	}
 	}
 	if( typeof obj.data === 'object' ) {
 		obj.data = myAjax.formatData(obj.data)
