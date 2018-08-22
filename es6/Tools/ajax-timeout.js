@@ -5,7 +5,7 @@ function myAjax(obj,overTime){
 	const timmer = setInterval(()=>{
 			if( myAjax.timeIsOver(startTime,overTime||obj.overTime) ){
 				if(obj.timeOut){
-					// httpRequest.close() // 自动关闭网路请求
+					// httpRequest.abort() // 自动关闭网路请求
 					obj.timeOut(httpRequest) //如果超时调用timeout函数
 				}
 			}
