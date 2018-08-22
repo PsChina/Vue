@@ -27,11 +27,22 @@ function myAjax(obj,overTime){
 			obj.error(this.responseText) // 否则调用失败的
 		}
 	}
-	httpRequest.send(JSON.stringify(obj.data||{}));
+	if( typeof obj.data === 'object' ) {
+		obj.data = myAjax.formatData(obj.data)
+	}
+	httpRequest.send(obj.data);
 }
 
 
 myAjax.timeIsOver = (startTime, overTime)=>{
 	const currentTime = (new Date()).getTime()
 	return currentTime-startTime >= overTime // 当前时间减去 网路请求开始的时间 大于等于 超时时间 则判断为超时
+}
+
+myAjax.formatData = (data)=>{
+	let dataStr = ''
+	for(let key in data){
+		dataStr += `${key}=${data[key]}&`
+	}
+	return dataStr.substring(0,dataStr.length-1)
 }
