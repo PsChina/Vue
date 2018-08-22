@@ -20,7 +20,7 @@ function myAjax(obj,overTime){
 			if(obj.success){
 				obj.success(this.responseText) //调用成功的回调			
 			}
-		}else if(obj.error){
+		}else if(obj.error&&this.status>399){
 			obj.error(this.responseText) // 否则调用失败的
 		}
 	}
