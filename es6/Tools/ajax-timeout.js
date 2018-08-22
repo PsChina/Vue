@@ -15,15 +15,12 @@ function myAjax(obj,overTime){
 		if(this.readyState!==4){ // 当网络请求完成到第四步
 			return
 		}
+		clearInterval(timmer);
 		if(this.status===200){ // 并且状态为200 成功的时候
-			clearInterval(timmer);
 			if(obj.success){
 				obj.success(this.responseText) //调用成功的回调			
 			}
-
-		}
-		clearInterval(timmer);
-		if(obj.error){
+		}else if(obj.error){
 			obj.error(this.responseText) // 否则调用失败的
 		}
 	}
