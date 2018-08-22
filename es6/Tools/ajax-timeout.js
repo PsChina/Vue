@@ -22,7 +22,7 @@ function myAjax(obj,overTime){
 			}
 		}else if(obj.error&&this.status>399){
 			if(obj.error){
-			obj.error(this.responseText) // 否则调用失败的
+				obj.error(this.responseText) // 否则调用失败的
 			}
 		}
 	}
