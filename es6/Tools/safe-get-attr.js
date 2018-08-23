@@ -1,34 +1,18 @@
-export default (obj, ...rest) => { // 这是一个安全获取属性的函数
-    if(!rest[0]){
-        return
+const safeGetAttr = (obj , ...rest) => { // 这是一个尾调函数 （递归内存消耗大 采用尾递归优化）
+    if(!rest[0]){ // 如果没有属性名，则返回原来的值。
+        return obj
     }
-    let t
-    let code = '(t=obj[rest[0]])&&'
-    for(let i=1; i<rest.length ; i++){
-        let key = rest[i]
-        code += `(${t=t[key]})&&`
-    }
-    eval(code.substring(0,code.length-2))
-    return t
-}
-// 例如
-/*
-import safeGetAttr from 'safe-get-attr'
+    if(typeof obj !== 'object'&&rest[0]){ // 如果要取值的对象不为 object（Object Array 等）并且还要取子属性。
 
-const obj = {
-    leve1:{
-        value:'1',
-        leve2:{
-            value:'2',
-            leve3:{
-                value:'3'
-            }
+        if(typeof obj === 'string' && rest[0]==='length'){ // 那就只有类型为 string 的值下面有个 length。
+            return obj.length
         }
+        return undefined // 否则就是未定义
+        
     }
+    const key = rest.splice(0,1) // 拿到第一层要取的属性名并且将它在属性列表内删除。
+    const value = obj[key] // 根据属性取值。
+    return safeGetAttr.apply(null, [value].concat(rest)) // 接着拿下一个属性。
 }
-let value = safeGetAttr(obj,'leve1','leve2','leve3','value')
-// value === '3'
 
-value = safeGetAttr(obj,'leve1','leve2','leve3', 'leve4', 'value')
-// value === undefined 但是不会报错
-*/
+export default safeGetAttr
