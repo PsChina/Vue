@@ -1,0 +1,78 @@
+function decompositionPrimeFactor(n){ // 用 js 写分解质因数
+    if(Number.isInteger(n)){
+        const primeFactorArr = [];
+        for(let x=2; x<n; x++) {
+            if(n%x===0){
+                primeFactorArr.push(x)
+                n/=x
+                x-- // 寻找所有相同质因数
+            }
+        }
+        primeFactorArr.push(n)
+        return function(duplicateRemoval){ 
+            if(duplicateRemoval){ // 是否去重重复因数
+                const singlePrimeFactorArr = []
+                for(const primeFactor of primeFactorArr){ // 数组去重
+                    if(singlePrimeFactorArr.indexOf(primeFactor)===-1){
+                        singlePrimeFactorArr.push(primeFactor)
+                    }
+                }
+                return singlePrimeFactorArr // 返回去重后的质因数
+            }else{ // 返回所有质因数
+                return primeFactorArr
+            }
+        }
+    }
+    return ()=>[]
+}
+
+function euler(n){ // 欧拉函数(φ)
+    /**
+     * 任意给定正整数n，请问在小于等于n的正整数之中，有多少个与n构成互质关系？
+     */
+    let factors = decompositionPrimeFactor(n)(true) // 求去重后的质因数
+    let eulerVal = n
+    for(let factor of factors){ // 遍历这个数的质因数
+        eulerVal *= (1-1/factor) // 通过欧拉函数公式φ(n)=n(1-1/p)(1-1/q)...(1-1/pr)求出函数值
+    }
+    return eulerVal
+}
+// alt + 42709 === φ
+/**
+ * 欧拉函数公式推导简介
+ * 1、
+ * ------------------------------------------------------
+ * 当n为某个质数(p)的k次方时 （n=p^k,其中p是质数，k是正整数）
+ * 
+ * φ(n)=p^k*(1-1/p)
+ * ------------------------------------------------------
+ * 例如 8 = 2^3 
+ * 其中 p=2 k=3 
+ * => φ(8) = 2^(3-1) 
+ * => 2^3(1-1/2) = 4 
+ * [1,3,5,7] 这4个数与 8 互质。
+ * 证明：
+ * 可以发现 1-8中 2 4 6 8 与 8 不构成互质 原因是他们都是质因数 p 的倍数
+ * 所以我们只需要把质因数p的倍数去掉就好了 2=1*p 4=2*p 6=3*P 8=4*P
+ * 所以 若 n 为某个质数p的k次方 则不与n互质的数有 1*p、2*p、...、p^(k-1)*p  有p^(k-1)个与n不互质的数剩下的因为没有公因数p而互质
+ * 而比小于等于n的正整数有n个，也就是 p^k个。 减去不互质的 p^(k-1)个 得到 φ(n)=p^k-p^(k-1) = p^k*(1-1/p)
+ * 
+ * 所以 当n为某个质数(p)的k次方时 φ(n)=p^k*(1-1/p)
+ * 
+ * 2、（未验证）
+ * ------------------------------------------------------
+ * 当n可以表示为某2个互质的数的积时 （n=p*q）
+ * φ(n)=φ(p*q)=φ(p)φ(q)
+ * φ(n)=p*(1-1/p)*q(1-1/q)
+ * ------------------------------------------------------
+ * 如果a与p互质(a<p)，b与q互质(b<q)，c与p*q互质(c<p*q)，则c与数对 (a,b) 是一一对应关系。由于a的值有φ(p)种可能，b的值有φ(q)种可能，则数对 (a,b) 有φ(p)φ(q)种可能，而c的值有φ(p*q)种可能，所以φ(p*q)就等于φ(p)φ(q)。
+ * 
+ * 3、
+ * ------------------------------------------------------
+ * 任意一个大于一的正整数都能用一连串的质因数相乘表示 (n=p1*p2*p3...pr)
+ * φ(n)=φ(p1*p2*p3...Pr)=φ(p1)φ(p2)φ(p3)...φ(pr) // 根据2得到
+ * =p1*p2*p3...pr(1-1/p1)(1-1/p1)...(1-1/pr) // 根据1得到
+ * =n(1-1/p1)(1-1/p1)...(1-1/pr) <=欧拉函数
+ * ------------------------------------------------------
+ * 
+ */
