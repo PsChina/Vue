@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .coror{
+            color: rgb(0, 0, 0);
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <input type="file" id="fileInput">
+    </form>
+    <canvas id="canvas"></canvas>
+    <canvas id="gray_canvas"></canvas>
+</body>
+</html>
+<script>
+    //Grey = 0.299*R + 0.587*G + 0.114*B
+    function rgb2gray(R,G,B){ // rgb 转灰度
+        return parseInt(0.299*R + 0.587*G + 0.114*B)
+    }
+    function grayscaleLevel(gray){
+        if(gray>=0&&gray<=42){
+            return 1
+        }else if(gray<=84){
+            return 2
+        }else if(gray<=127){
+            return 3
+        }else if(gray<=170){
+            return 4
+        }else if(gray<=213){
+            return 5
+        }else if(gray<=255){
+            return 6
+        }
+    }
+
+    var input = document.getElementById('fileInput')
+    var canvas = document.getElementById('canvas')
+    var gray_canvas = document.getElementById('gray_canvas')
+    var reader = new FileReader()
+    input.oninput = function(){
+        var file = this.files[0]
+        var img = new Image()
+        reader.readAsDataURL(file)
+        reader.onload = function(){
+            img.src = this.result
+            var ctx = canvas.getContext('2d')
+            img.onload = function(){
+                canvas.width = this.width
+                canvas.height = this.height
+                ctx.drawImage(this,0,0,this.width,this.height)
+                var imageData = ctx.getImageData(0,0,this.width,this.height)
+                var grayscaleArray = []
+                var data = imageData.data
+                var length = data.length
+                for(var i=0; i<length; i+=3){
+                    var gray = rgb2gray(data[i],data[i+1],data[i+2])
+                    var grayLeve = parseInt(grayscaleLevel(gray)/6*255)
+                    imageData.data[i] = grayLeve
+                    imageData.data[i+1] = grayLeve
+                    imageData.data[i+2] = grayLeve
+                }
+                var gray_ctx = gray_canvas.getContext('2d')
+                gray_canvas.width = canvas.width
+                gray_canvas.height = canvas.height
+                gray_ctx.putImageData(imageData,0,0,0,0,this.width,this.height)
+            }
+        }
+    }
+</script>
