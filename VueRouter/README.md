@@ -129,7 +129,7 @@ module.exports = {
             { test: /\.(js|jsx)$/, use: 'babel-loader' }, // 使得 webpack 支持 jsx语法以及 es6 ,es7 等等
             { test: /\.vue$/, use: 'vue-loader' }, // 使得 webpack 支持 import *.vue
             // { test: /\.ts$/, use: 'ts-loader' }, // 使得 webpack 支持 import *.ts
-            { test: /\.(png|jp?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)$/, use: [{ loader: 'url-loader', options:{limit: 10000} }]}, // 使得 webpack 支持 import 图片 iconfont mp3 等等
+            { test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)$/, use: [{ loader: 'url-loader', options:{limit: 10000} }]}, // 使得 webpack 支持 import 图片 iconfont mp3 等等
         ]
     },
     plugins:[
