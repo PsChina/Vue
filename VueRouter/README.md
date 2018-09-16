@@ -157,3 +157,58 @@ module.exports = {
       },
 }
 ```
+
+## 按需加载
+
+假设页面上有 3 个路由 `page1`、`page2`、`page3` 为了优化首屏加载速度，我们应该如何配置才能使得当用户点击这个路由的时候才下载对应资源呢？ 以下便是答案：
+
+router-config.js
+```js
+const Home = () => import('./pages/home')
+const Page1 = () => import('./routes/page1')
+const Page2 = () => import('./routes/page2')
+const Page3 = () => import('./routes/page3')
+export default [
+    { path:'/', component: Home },
+    { path:'/page1', component: Page1 },
+    { path:'/page2', component: Page2 },
+    { path:'/page3', component: Page3 },
+]
+```
+
+当然上面的代码用到 js 的新特新 `import()` 所以需要修改 `webpack.config.js`
+
+需要下载 `babel-plugin-syntax-dynamic-import`
+
+```bash
+npm i babel-plugin-syntax-dynamic-import -D
+```
+
+对应的新版本是 `@babel/plugin-syntax-dynamic-import`
+
+```bash
+npm i @babel/plugin-syntax-dynamic-import -D
+```
+
+webpack.config.js
+```js
+module.exports = {
+    module:{
+        rules:[
+            { 
+                test: /\.(js|jsx)$/, 
+                use: [
+                        { // 使得 webpack 支持 jsx语法以及 es6 ,es7 等等
+                            loader: 'babel-loader', 
+                            options:{ 
+                                presets:['env'], // 如果下载的是@babel/preset-env 则写 @babel/preset-env 否则写 env
+                                plugins:['syntax-dynamic-import']  // 新版本插件写法 @babel/plugin-syntax-dynamic-import
+                            } 
+                        }
+                    ] }, 
+        ]
+    }
+}
+```
+
+详情请看demos [Router-Loaded-On-Demand](https://github.com/PsChina/Vue/tree/master/VueRouter/demos/Router-Loaded-On-Demand)
