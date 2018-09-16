@@ -5,7 +5,7 @@
 1. [基本配置](#vue-router)
 1. [嵌套](#路由嵌套)
 1. [按需加载](#按需加载)
-1. [环境搭建](#手动搭建-webpack4.0-环境)
+1. [环境搭建](#手动搭建-webpack-环境)
 
 ## vue-router
 vue-router 是一个帮助我们管理 vue 多页面之间的关系的库。
@@ -166,7 +166,7 @@ module.exports = {
 
 详情请看demos [Router-Loaded-On-Demand](https://github.com/PsChina/Vue/tree/master/VueRouter/demos/Router-Loaded-On-Demand)
 
-## 手动搭建 webpack4.0 环境
+## 手动搭建 webpack 环境
 ```js
 const webpack = require('webpack') // 访问内置插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // 压缩js的插件
