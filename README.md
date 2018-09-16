@@ -2,16 +2,17 @@
 渐进式框架的学习
 
 ## 这个仓库将为大家介绍:
-1、es6 语法 。
 
-2、webpack 的使用 。
+1. [es6 语法](https://github.com/PsChina/Vue/tree/master/es6)
 
-3、vue 基本语法、生命周期函数、组件等。
+1. [webpack 的使用](https://github.com/PsChina/Vue/tree/master/webpack)
 
-4、vue-cli。
+1. [vue 基本语法、生命周期函数、组件等](https://github.com/PsChina/Vue/tree/master/vue)
 
-5、vue-router。
+1. [vue-cli](https://github.com/PsChina/Vue/tree/master/Vue-cli)
 
-6、vuex。
+1. [vue-router](https://github.com/PsChina/Vue/tree/master/VueRouter)
 
-7、elementUI、mintUI、iView、Vux、等ui库的介绍。
+1. vuex
+
+1. elementUI、mintUI、iView、Vux、等ui库的介绍
