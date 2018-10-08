@@ -88,7 +88,7 @@ function euler(n){ // 欧拉函数(φ)
 //     if(r === min) {
 //         return r
 //     } else {
-//         return gcd(r,min)
+//         return gcd(r, min)
 //     }
 // }
 
