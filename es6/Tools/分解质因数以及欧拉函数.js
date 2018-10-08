@@ -10,7 +10,7 @@ function decompositionPrimeFactor(n){ // 用 js 写分解质因数
         }
         primeFactorArr.push(n)
         return function(duplicateRemoval){ 
-            if(duplicateRemoval){ // 是否去重重复因数
+            if(duplicateRemoval){ // 是否去除重复因数
                 const singlePrimeFactorArr = []
                 for(const primeFactor of primeFactorArr){ // 数组去重
                     if(singlePrimeFactorArr.indexOf(primeFactor)===-1){
@@ -76,3 +76,26 @@ function euler(n){ // 欧拉函数(φ)
  * ------------------------------------------------------
  * 
  */
+
+// 定义寻找最大公约数的函数
+function gad(a, b){ // 更相减损术
+   let max = Math.max(a,b)
+   let min = Math.min(a,b)
+   let r = max - min
+    if(r===min){
+        return r
+    } else {
+        return gad(r,min)
+    }
+}
+
+// 定义获取整数 n 中的 1 到 n 与 n 互质的所有数的函数。
+function getPerNumberOfEuler(n){
+    const relativelyPrimes = []
+    for(let i = 1; i < n; i++){ // 由于 n 与 n 本身的最大公约数除了 1 还有 n  本身随意不考虑 n 。
+        if(gad(i,n)===1){
+            relativelyPrimes.push(i)
+        }
+    }
+    return relativelyPrimes
+}
