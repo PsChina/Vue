@@ -37,6 +37,7 @@ function euler(n){ // 欧拉函数(φ)
     }
     return eulerVal
 }
+
 // alt + 42709 === φ
 /**
  * 欧拉函数公式推导简介
@@ -78,14 +79,14 @@ function euler(n){ // 欧拉函数(φ)
  */
 
 // 定义寻找最大公约数的函数
-function gad(a, b){ // 更相减损术
+function gcd(a, b){ // 更相减损术
    let max = Math.max(a,b)
    let min = Math.min(a,b)
    let r = max - min
     if(r===min){
         return r
     } else {
-        return gad(r,min)
+        return gcd(r,min)
     }
 }
 
@@ -93,7 +94,7 @@ function gad(a, b){ // 更相减损术
 function getPerNumberOfEuler(n){
     const relativelyPrimes = []
     for(let i = 1; i < n; i++){ // 由于 n 与 n 本身的最大公约数除了 1 还有 n  本身随意不考虑 n 。
-        if(gad(i,n)===1){
+        if(gcd(i,n)===1){
             relativelyPrimes.push(i)
         }
     }
