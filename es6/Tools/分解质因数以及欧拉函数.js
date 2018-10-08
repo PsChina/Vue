@@ -8,7 +8,7 @@ function decompositionPrimeFactor(n){ // 用 js 写分解质因数
                 x-- // 寻找所有相同质因数
             }
         }
-        primeFactorArr.push(n)
+        if(1<n) primeFactorArr.push(n) // 1 不是质数
         return function(duplicateRemoval){ 
             if(duplicateRemoval){ // 是否去除重复因数
                 const singlePrimeFactorArr = []
