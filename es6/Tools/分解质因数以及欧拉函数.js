@@ -99,7 +99,7 @@ function gcd(a, b){ // 辗转相除法
     if(r === 0) {
         return min
     } else {
-        return gcd(r1, min)
+        return gcd(r, min)
     }
 }
 
