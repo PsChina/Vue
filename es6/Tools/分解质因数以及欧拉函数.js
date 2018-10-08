@@ -78,7 +78,7 @@ function euler(n){ // 欧拉函数(φ)
  * 
  */
 
- 
+
 // 定义寻找最大公约数的函数
 
 // function gcd(a, b){ // 更相减损术
@@ -95,8 +95,8 @@ function euler(n){ // 欧拉函数(φ)
 function gcd(a, b){ // 辗转相除法
     let max = Math.max(a,b)
     let min = Math.min(a,b)
-    let r1 = max%min
-    if(r1===0){
+    let r = max % min
+    if(r===0){
         return min
     } else {
         return gcd(r1, min)
