@@ -7,7 +7,7 @@ webpack 是出现在 gulp 之后的一个更加方便的自动化构建工具。
 ## 前提
 1、使用webpack必须安装 [node](https://nodejs.org/en/)
 
-2、必须全局安装 webpack 
+2、必须全局安装 webpack
 
 ```bash
 npm i webpack -g
