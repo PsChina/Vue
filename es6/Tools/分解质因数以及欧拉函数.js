@@ -92,7 +92,7 @@ function euler(n){ // 欧拉函数(φ)
 //     }
 // }
 
-function gcd(a, b){ // 辗转相除法
+function gcd(a, b){ // 辗转相除法 ( 欧几里德算法 )
     let max = Math.max(a, b)
     let min = Math.min(a, b)
     let r = max % min
