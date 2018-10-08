@@ -106,7 +106,7 @@ function gcd(a, b){ // 辗转相除法
 // 定义获取整数 n 中的 1 到 n 与 n 互质的所有数的函数。
 function getPerNumberOfEuler(n){
     const relativelyPrimes = []
-    for(let i = 1; i < n; i++){ // 由于 n 与 n 本身的最大公约数除了 1 还有 n  本身随意不考虑 n 。
+    for(let i = 1; i < n; i++){ // 由于 n 与 n 本身的最大公约数除了 1 还有 n  本身，所以不考虑 n 。
         if(gcd(i,n)===1){
             relativelyPrimes.push(i)
         }
