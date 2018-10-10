@@ -75,7 +75,7 @@ function euler(n){ // 欧拉函数(φ)
  * 
  * 如果a与p互质(a<p)，b与q互质(b<q)，c与p*q互质(c<p*q)，则c与数对 (a,b) 是一一对应关系。由于a的值有φ(p)种可能，b的值有φ(q)种可能，则数对 (a,b) 有φ(p)φ(q)种可能，而c的值有φ(p*q)种可能，所以φ(p*q)就等于φ(p)φ(q)。
  * 
- * 根据中国剩余定理 https://baike.baidu.com/item/%E5%AD%99%E5%AD%90%E5%AE%9A%E7%90%86
+ * 根据中国剩余定理 https://baike.baidu.com/item/%E5%AD%99%E5%AD%90%E5%AE%9A%E7%90%86 ，这里有一个通俗的博客 https://www.cnblogs.com/MashiroSky/p/5918158.html 介绍了中国剩余定理。
  * 
  * 同余方程组
  * c ≡ a (mod p)
