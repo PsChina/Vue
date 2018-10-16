@@ -97,6 +97,6 @@ var Cappuccino = /** @class */ (function (_super) {
     }
     return Cappuccino;
 }(Beverage));
-var cappuccino = new Cappuccino(); // 有人点了一杯卡布奇诺 不要奶泡
-cappuccino.setMilkFoam(null);
+var cappuccino = new Cappuccino(); // 有人点了一杯卡布奇诺 
+cappuccino.setMilkFoam(null); // 不要奶泡
 cappuccino.cost(); // 28

@@ -94,8 +94,8 @@ class Cappuccino extends Beverage {
 
 
 
-let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺 不要奶泡
+let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺 
 
-cappuccino.setMilkFoam(null)
+cappuccino.setMilkFoam(null) // 不要奶泡
 
 cappuccino.cost() // 28
