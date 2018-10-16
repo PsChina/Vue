@@ -4,8 +4,8 @@ class MilkyTea { // 奶茶基类
         this.milk = false // 是否含有牛奶
         this.mocha = false // 是否含有摩卡
         this.$soybeanMilk = 10 // 豆浆价格
-        this.$milk = 20 // B 牛奶价格
-        this.$mocha = 30 // C 摩卡价格
+        this.$milk = 20 // 牛奶价格
+        this.$mocha = 30 // 摩卡价格
     }
     cost(){ // 计算各种原料的总价
         return Number(this.soybeanMilk) * this.$soybeanMilk + Number(this.milk) * this.$milk + Number(this.mocha) * this.$mocha
@@ -21,7 +21,7 @@ class MilkyTea { // 奶茶基类
     }
 }
 
-class Cappuccio extends MilkyTea { //卡布奇诺
+class Cappuccino extends MilkyTea { //卡布奇诺
     constructor(){
         super()
     }
@@ -30,11 +30,11 @@ class Cappuccio extends MilkyTea { //卡布奇诺
     }
 }
 
-const cappuccio = new Cappuccio() // 有人点了一杯 卡布奇诺
+const cappuccino = new Cappuccino() // 有人点了一杯 卡布奇诺
 
-cappuccio.hasMilk(true) // 说要加 牛奶 不加豆浆和摩卡
+cappuccino.hasMilk(true) // 说要加 牛奶 不加豆浆和摩卡
 
-const $cappuccio = cappuccio.cost() // 卡布奇诺 的价格
+const $cappuccino = cappuccino.cost() // 卡布奇诺 的价格
 
-console.log($cappuccio) // 30 块
+console.log($cappuccino) // 30 块
 
