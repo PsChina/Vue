@@ -4,7 +4,7 @@ abstract class Seasoning{ // 抽象基类-调料
     public abstract cost():number
 }
 class Coffee extends Seasoning{ // 咖啡
-    public price
+    public price:number
     constructor(){
         super()
         this.price = 8
@@ -14,7 +14,7 @@ class Coffee extends Seasoning{ // 咖啡
     }
 }
 class MilkFoam extends Seasoning{ // 奶泡
-    public price
+    public price:number
     constructor(){
         super()
         this.price = 5
@@ -24,7 +24,7 @@ class MilkFoam extends Seasoning{ // 奶泡
     }
 }
 class Milk extends Seasoning { // 牛奶
-    public price
+    public price:number
     constructor(){
         super()
         this.price = 10
@@ -34,7 +34,7 @@ class Milk extends Seasoning { // 牛奶
     }
 }
 class Mocha extends Seasoning{ // 摩卡
-    public price
+    public price:number
     constructor(){
         super()
         this.price = 15
