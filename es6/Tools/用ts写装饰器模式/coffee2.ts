@@ -37,10 +37,10 @@ class Mocha { // 摩卡
 
 abstract class Beverage { // 饮料
     public description: string
-    public coffee: Coffee
-    public milkFoam : MilkFoam
-    public milk: Milk
-    public mocha: Mocha
+    public coffee: Coffee | null
+    public milkFoam : MilkFoam | null
+    public milk: Milk | null
+    public mocha: Mocha | null
     public price: number
     constructor(){
         this.coffee = null // 没有咖啡

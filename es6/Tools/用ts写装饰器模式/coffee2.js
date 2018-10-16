@@ -90,13 +90,16 @@ var Cappuccino = /** @class */ (function (_super) {
     function Cappuccino() {
         var _this = _super.call(this) || this;
         _this.description = '在玻璃杯中加入咖啡制成的冰块，倒入加糖煮沸的牛奶，从上面慢慢注入冰冻咖啡，这时牛奶和咖啡分成两层。牛奶泡沫在最上层。';
-        _this.setMike(new Milk());
-        _this.setCoffee(new Coffee());
-        _this.setMilkFoam(new MilkFoam());
         return _this;
     }
     return Cappuccino;
 }(Beverage));
 var cappuccino = new Cappuccino(); // 有人点了一杯卡布奇诺 
-cappuccino.setMilkFoam(null); // 不要奶泡
+// 加咖啡
+var coffee = new Coffee();
+cappuccino.setCoffee(coffee);
+// 加牛奶
+var milk = new Milk();
+cappuccino.setMike(milk);
+// 计算价格 
 cappuccino.cost(); // 28
