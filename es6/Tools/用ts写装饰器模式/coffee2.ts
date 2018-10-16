@@ -1,54 +1,98 @@
-abstract class Coffee {
-    public milkFoam : boolean
-    public milk: boolean
-    public mocha: boolean
-    public $milkFoam: number
-    public $milk: number
-    public $mocha: number
+class Coffee { // 咖啡
+    public price
     constructor(){
-        this.milkFoam = false // 是否含有奶泡
-        this.milk = false // 是否含有牛奶
-        this.mocha = false // 是否含有摩卡
-        this.$milkFoam = 10 // 奶泡价格
-        this.$milk = 20 // 牛奶价格
-        this.$mocha = 30 // 摩卡价格
+        this.price = 8
+    }
+    cost(){
+        return this.price
+    }
+}
+class MilkFoam { // 奶泡
+    public price
+    constructor(){
+        this.price = 5
+    }
+    cost(){
+        return this.price
+    }
+}
+class Milk { // 牛奶
+    public price
+    constructor(){
+        this.price = 10
+    }
+    cost(){
+        return this.price
+    }
+}
+class Mocha { // 摩卡
+    public price
+    constructor(){
+        this.price = 15
+    }
+    cost(){
+        return this.price
+    }
+}
+
+abstract class Beverage { // 饮料
+    public description: string
+    public coffee: Coffee
+    public milkFoam : MilkFoam
+    public milk: Milk
+    public mocha: Mocha
+    public price: number
+    constructor(){
+        this.coffee = null // 没有咖啡
+        this.milkFoam = null // 没有奶泡
+        this.milk = null // 没有牛奶
+        this.mocha = null // 没有摩卡
+        this.price = 10 // 初始价格10块
     }
     cost(){ // 计算各种原料的总价
-        return Number(this.milkFoam) * this.$milkFoam + Number(this.milk) * this.$milk + Number(this.mocha) * this.$mocha
+        if(this.coffee instanceof Coffee){
+            this.price += this.coffee.cost() 
+        }
+        if(this.milkFoam instanceof MilkFoam){
+            this.price += this.milkFoam.cost()
+        }
+        if(this.milk instanceof Milk){
+            this.price += this.milk.cost()
+        }
+        if(this.mocha instanceof Mocha){
+            this.price += this.mocha.cost()
+        }
+        return this.price
     }
-    hasSoybeanMilk(val){ // 一杯奶茶是否含 (奶泡)
-        this.milkFoam = val
+    setCoffee(coffee:Coffee){ // 设置咖啡
+        this.coffee = coffee
     }
-    hasMilk(val){ // 一杯奶茶是否含有 (牛奶)
-        this.milk = val
+    setMilkFoam(milkFoam:MilkFoam){ // 设置 奶泡
+        this.milkFoam = milkFoam
     }
-    hasMocha(val){ // 一杯奶茶是否含有 (摩卡)
-        this.mocha = val
+    setMike(milk:Milk){ // 设置 牛奶
+        this.milk = milk
+    }
+    setMocha(mocha:Mocha){ // 设置 摩卡
+        this.mocha = mocha
+    }
+    getDescription(){ // 获取描述信息
+        return this.description
     }
 }
 
-class Cappuccino extends Coffee { // 卡布奇诺
+class Cappuccino extends Beverage {
     constructor(){
         super()
-    }
-    public cost(){
-        return super.cost() + 10 // 卡布奇诺比原味贵10块
-    }
-}
-
-class Latte extends Coffee { // 卡布奇诺
-    constructor(){
-        super()
-    }
-    public cost(){
-        return super.cost() + 8 // 拿铁比原味贵8块
+        this.description = '在玻璃杯中加入咖啡制成的冰块，倒入加糖煮沸的牛奶，从上面慢慢注入冰冻咖啡，这时牛奶和咖啡分成两层。牛奶泡沫在最上层。'
+        this.setMike(new Milk())
+        this.setCoffee(new Coffee())
+        this.setMilkFoam(new MilkFoam())
     }
 }
 
-const cappuccino = new Cappuccino() // 有人点了一杯 卡布奇诺
 
-cappuccino.hasMilk(true) // 说要加 牛奶 不加豆浆和摩卡
 
-const $cappuccio = cappuccino.cost() // 卡布奇诺 的价格
+let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺
 
-console.log($cappuccio) // 30 块
+cappuccino.cost() // 33

@@ -10,48 +10,89 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Coffee = /** @class */ (function () {
     function Coffee() {
-        this.milkFoam = false; // 是否含有奶泡
-        this.milk = false; // 是否含有牛奶
-        this.mocha = false; // 是否含有摩卡
-        this.$milkFoam = 10; // 奶泡价格
-        this.$milk = 20; // 牛奶价格
-        this.$mocha = 30; // 摩卡价格
+        this.price = 8;
     }
     Coffee.prototype.cost = function () {
-        return Number(this.milkFoam) * this.$milkFoam + Number(this.milk) * this.$milk + Number(this.mocha) * this.$mocha;
-    };
-    Coffee.prototype.hasSoybeanMilk = function (val) {
-        this.milkFoam = val;
-    };
-    Coffee.prototype.hasMilk = function (val) {
-        this.milk = val;
-    };
-    Coffee.prototype.hasMocha = function (val) {
-        this.mocha = val;
+        return this.price;
     };
     return Coffee;
+}());
+var MilkFoam = /** @class */ (function () {
+    function MilkFoam() {
+        this.price = 5;
+    }
+    MilkFoam.prototype.cost = function () {
+        return this.price;
+    };
+    return MilkFoam;
+}());
+var Milk = /** @class */ (function () {
+    function Milk() {
+        this.price = 10;
+    }
+    Milk.prototype.cost = function () {
+        return this.price;
+    };
+    return Milk;
+}());
+var Mocha = /** @class */ (function () {
+    function Mocha() {
+        this.price = 15;
+    }
+    Mocha.prototype.cost = function () {
+        return this.price;
+    };
+    return Mocha;
+}());
+var Beverage = /** @class */ (function () {
+    function Beverage() {
+        this.coffee = null; // 没有咖啡
+        this.milkFoam = null; // 没有奶泡
+        this.milk = null; // 没有牛奶
+        this.mocha = null; // 没有摩卡
+        this.price = 10; // 初始价格10块
+    }
+    Beverage.prototype.cost = function () {
+        if (this.coffee instanceof Coffee) {
+            this.price += this.coffee.cost();
+        }
+        if (this.milkFoam instanceof MilkFoam) {
+            this.price += this.milkFoam.cost();
+        }
+        if (this.milk instanceof Milk) {
+            this.price += this.milk.cost();
+        }
+        if (this.mocha instanceof Mocha) {
+            this.price += this.mocha.cost();
+        }
+        return this.price;
+    };
+    Beverage.prototype.setCoffee = function (coffee) {
+        this.coffee = coffee;
+    };
+    Beverage.prototype.setMilkFoam = function (milkFoam) {
+        this.milkFoam = milkFoam;
+    };
+    Beverage.prototype.setMike = function (milk) {
+        this.milk = milk;
+    };
+    Beverage.prototype.setMocha = function (mocha) {
+        this.mocha = mocha;
+    };
+    Beverage.prototype.getDescription = function () {
+        return this.description;
+    };
+    return Beverage;
 }());
 var Cappuccino = /** @class */ (function (_super) {
     __extends(Cappuccino, _super);
     function Cappuccino() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        _this.description = '在玻璃杯中加入咖啡制成的冰块，倒入加糖煮沸的牛奶，从上面慢慢注入冰冻咖啡，这时牛奶和咖啡分成两层。牛奶泡沫在最上层。';
+        _this.setMike(new Milk());
+        _this.setCoffee(new Coffee());
+        _this.setMilkFoam(new MilkFoam());
+        return _this;
     }
-    Cappuccino.prototype.cost = function () {
-        return _super.prototype.cost.call(this) + 10; // 卡布奇诺比原味贵10块
-    };
     return Cappuccino;
-}(Coffee));
-var Latte = /** @class */ (function (_super) {
-    __extends(Latte, _super);
-    function Latte() {
-        return _super.call(this) || this;
-    }
-    Latte.prototype.cost = function () {
-        return _super.prototype.cost.call(this) + 8; // 拿铁比原味贵8块
-    };
-    return Latte;
-}(Coffee));
-var cappuccino = new Cappuccino(); // 有人点了一杯 卡布奇诺
-cappuccino.hasMilk(true); // 说要加 牛奶 不加豆浆和摩卡
-var $cappuccio = cappuccino.cost(); // 卡布奇诺 的价格
-console.log($cappuccio); // 30 块
+}(Beverage));
