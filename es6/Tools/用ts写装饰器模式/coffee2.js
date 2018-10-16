@@ -53,19 +53,20 @@ var Beverage = /** @class */ (function () {
         this.price = 10; // 初始价格10块
     }
     Beverage.prototype.cost = function () {
+        var currentPrice = this.price;
         if (this.coffee instanceof Coffee) {
-            this.price += this.coffee.cost();
+            currentPrice += this.coffee.cost();
         }
         if (this.milkFoam instanceof MilkFoam) {
-            this.price += this.milkFoam.cost();
+            currentPrice += this.milkFoam.cost();
         }
         if (this.milk instanceof Milk) {
-            this.price += this.milk.cost();
+            currentPrice += this.milk.cost();
         }
         if (this.mocha instanceof Mocha) {
-            this.price += this.mocha.cost();
+            currentPrice += this.mocha.cost();
         }
-        return this.price;
+        return currentPrice;
     };
     Beverage.prototype.setCoffee = function (coffee) {
         this.coffee = coffee;
@@ -96,3 +97,6 @@ var Cappuccino = /** @class */ (function (_super) {
     }
     return Cappuccino;
 }(Beverage));
+var cappuccino = new Cappuccino(); // 有人点了一杯卡布奇诺 不要奶泡
+cappuccino.setMilkFoam(null);
+cappuccino.cost(); // 28

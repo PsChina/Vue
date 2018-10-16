@@ -50,19 +50,20 @@ abstract class Beverage { // 饮料
         this.price = 10 // 初始价格10块
     }
     cost(){ // 计算各种原料的总价
+        let currentPrice = this.price
         if(this.coffee instanceof Coffee){
-            this.price += this.coffee.cost() 
+            currentPrice += this.coffee.cost() 
         }
         if(this.milkFoam instanceof MilkFoam){
-            this.price += this.milkFoam.cost()
+            currentPrice += this.milkFoam.cost()
         }
         if(this.milk instanceof Milk){
-            this.price += this.milk.cost()
+            currentPrice += this.milk.cost()
         }
         if(this.mocha instanceof Mocha){
-            this.price += this.mocha.cost()
+            currentPrice += this.mocha.cost()
         }
-        return this.price
+        return currentPrice
     }
     setCoffee(coffee:Coffee){ // 设置咖啡
         this.coffee = coffee
@@ -93,6 +94,8 @@ class Cappuccino extends Beverage {
 
 
 
-let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺
+let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺 不要奶泡
 
-cappuccino.cost() // 33
+cappuccino.setMilkFoam(null)
+
+cappuccino.cost() // 28
