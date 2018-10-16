@@ -1,33 +1,42 @@
-class Coffee { // 咖啡
+
+abstract class Seasoning{ // 抽象基类-调料
+    public abstract price:number
+    public abstract cost():number
+}
+class Coffee extends Seasoning{ // 咖啡
     public price
     constructor(){
+        super()
         this.price = 8
     }
     cost(){
         return this.price
     }
 }
-class MilkFoam { // 奶泡
+class MilkFoam extends Seasoning{ // 奶泡
     public price
     constructor(){
+        super()
         this.price = 5
     }
     cost(){
         return this.price
     }
 }
-class Milk { // 牛奶
+class Milk extends Seasoning { // 牛奶
     public price
     constructor(){
+        super()
         this.price = 10
     }
     cost(){
         return this.price
     }
 }
-class Mocha { // 摩卡
+class Mocha extends Seasoning{ // 摩卡
     public price
     constructor(){
+        super()
         this.price = 15
     }
     cost(){
@@ -37,45 +46,21 @@ class Mocha { // 摩卡
 
 abstract class Beverage { // 饮料
     public description: string
-    public coffee: Coffee
-    public milkFoam : MilkFoam
-    public milk: Milk
-    public mocha: Mocha
     public price: number
+    public seasoningList: Array<Seasoning>
     constructor(){
-        this.coffee = null // 没有咖啡
-        this.milkFoam = null // 没有奶泡
-        this.milk = null // 没有牛奶
-        this.mocha = null // 没有摩卡
         this.price = 10 // 初始价格10块
+        this.seasoningList = [] // 默认不加任何调料
     }
     cost(){ // 计算各种原料的总价
         let currentPrice = this.price
-        if(this.coffee instanceof Coffee){
-            currentPrice += this.coffee.cost() 
-        }
-        if(this.milkFoam instanceof MilkFoam){
-            currentPrice += this.milkFoam.cost()
-        }
-        if(this.milk instanceof Milk){
-            currentPrice += this.milk.cost()
-        }
-        if(this.mocha instanceof Mocha){
-            currentPrice += this.mocha.cost()
-        }
+        this.seasoningList.forEach(season => {
+            currentPrice += season.cost()
+        });
         return currentPrice
     }
-    setCoffee(coffee:Coffee){ // 设置咖啡
-        this.coffee = coffee
-    }
-    setMilkFoam(milkFoam:MilkFoam){ // 设置 奶泡
-        this.milkFoam = milkFoam
-    }
-    setMike(milk:Milk){ // 设置 牛奶
-        this.milk = milk
-    }
-    setMocha(mocha:Mocha){ // 设置 摩卡
-        this.mocha = mocha
+    setSeasoning(seasoning:Seasoning){ // 设置咖啡
+        this.seasoningList.push(seasoning)
     }
     getDescription(){ // 获取描述信息
         return this.description
@@ -96,13 +81,13 @@ let cappuccino = new Cappuccino () // 有人点了一杯卡布奇诺
 
 let coffee = new Coffee()
 
-cappuccino.setCoffee(coffee)
+cappuccino.setSeasoning(coffee)
 
 // 加牛奶
 
 let milk = new Milk()
 
-cappuccino.setMike(milk)
+cappuccino.setSeasoning(milk)
 
 // 计算价格 
 
