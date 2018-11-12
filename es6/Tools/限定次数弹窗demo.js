@@ -26,7 +26,7 @@ function getCookie(name) { // getCookie 这个没什么好说的
     return null;
 }
 
-function whenPageOpend(){ // 当页面被打开的时候
+function whenPageOpened(){ // 当页面被打开的时候
     let lastPopUpedTime = getCookie('lastPopUpedTime')
     let now = new Date().getTime()
 
