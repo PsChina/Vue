@@ -48,4 +48,4 @@ function popUp(){ // 弹窗
 
 
 
-whenPageOpend()
+whenPageOpened()
