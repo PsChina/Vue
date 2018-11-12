@@ -4,14 +4,14 @@ function is0_12(date) { // 判断一个字符串时间戳 是否在当天的 00 
     let _00 = new Date().setHours(0) // 当天 00 点
     let _12 = new Date().setHours(12) // 当天 12 点
     let time = new Date(Number(date)).getTime() // 传入的时间
-    return _00 < time && _12 > time // 传入的时间是否在 00-12 点之间 是为 true 否 为 false
+    return _00 <= time && _12 > time // 传入的时间是否在 00-12 点之间 是为 true 否 为 false
 }
 
-function is13_24(date) { // 判断一个字符串时间戳 是否在当天的 13 - 24 点
-    let _13 = new Date().setHours(13) // 当天 13 点
+function is12_24(date) { // 判断一个字符串时间戳 是否在当天的 13 - 24 点
+    let _12 = new Date().setHours(12) // 当天 13 点
     let _24 = new Date().setHours(24) // 当天 24 点
     let time = new Date(Number(date)).getTime() // 传入的时间
-    return _13 < time && _24 > time // 传入的时间是否在 13-24 点之间 是为 true 否 为 false
+    return _12 <= time && _24 > time // 传入的时间是否在 13-24 点之间 是为 true 否 为 false
 }
 
 function setCookie(name,value,days) { // setCookie 这个没什么好说的
@@ -37,7 +37,7 @@ function whenPageOpened(){ // 当页面被打开的时候
             popUp() // 弹窗
         }
     } else { // 现在是 13-24 点
-        if( !is13_24(lastPopUpedTime) ) { // 当天的 13-24 点 没有谈过窗
+        if( !is12_24(lastPopUpedTime) ) { // 当天的 13-24 点 没有谈过窗
             popUp() // 弹窗
         }
     }
