@@ -1,3 +1,5 @@
+// 这是一个 24小时内，弹两次框 0点到12点，12点到24点的需求。
+
 function is0_12(date) { // 判断一个字符串时间戳 是否在当天的 00 - 12 点
     let _00 = new Date().setHours(0) // 当天 00 点
     let _12 = new Date().setHours(12) // 当天 12 点
