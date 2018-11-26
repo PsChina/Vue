@@ -4,4 +4,4 @@
 
 效果:
 
-![time-picker]()
+![time-picker](https://github.com/PsChina/Vue/blob/master/images/time-picker.jpg)
