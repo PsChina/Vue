@@ -1,16 +1,16 @@
 <template>
     <div class="report-sales">
         <pickder-view  
-        v-show="showTimePicker"
-        :years="timeList[0]"
-        :months="timeList[1]"
-        :days="days"
-        @change="valueChange"></pickder-view>
+          v-show="showTimePicker"
+          :years="timeList[0]"
+          :months="timeList[1]"
+          :days="days"
+          @change="valueChange"></pickder-view>     
     </div>
 </template>
 
 <script>
-import pickderView from '../TimePikcerView'
+import pickderView from '../TimePikcer'
 export default {
   data() {
     const years = {
