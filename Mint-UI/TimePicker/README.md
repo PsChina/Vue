@@ -44,6 +44,30 @@ v-show="showTimePicker"
 >
 
 </range-picker>
+
+<script>
+export default {
+    data(){
+        return {
+            showTimePicker: false,
+            timeRange: ''
+        }
+    },
+    methods: {
+        toggleTimePicker() {
+        this.showTimePicker = !this.showTimePicker
+        },
+        onOk(val) {
+        this.timeRange = `${val[0].replace(/-/ig, '/')}-${val[1].replace(/-/ig, '/')}`
+        this.hideSelector()
+        },
+        hideSelector() {
+        this.toggleTimePicker()
+        this.show = false
+        } 
+    }
+}
+</script>
 ```
 
 ### 效果
