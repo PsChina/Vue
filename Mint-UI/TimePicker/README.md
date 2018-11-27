@@ -41,3 +41,7 @@ v-show="showTimePicker"
 
 </range-picker>
 ```
+
+### 效果
+
+![time-picker](https://github.com/PsChina/Vue/blob/master/images/range-picker.gif)
