@@ -8,6 +8,13 @@
 
 ## TimeRangePicker
 
+外部依赖
+```bash
+npm i mint-ui -S #基于Mint-UI的 mt-picker 封装
+
+npm i easy-filter #fotmatTime date 过滤器
+```
+
 这个组件是可以复用的 api
 
 ### 属性
