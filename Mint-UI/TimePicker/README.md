@@ -2,6 +2,10 @@
 
 这是一个初步封装的组件
 
+效果:
+
+![time-picker](https://github.com/PsChina/Vue/blob/master/images/time-picker.jpg)
+
 ## TimeRangePicker
 
 这个组件是可以复用的 api
