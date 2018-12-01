@@ -17,6 +17,10 @@ npm i easy-filter -S #fotmatTime date 过滤器
 
 这个组件是可以复用的 api
 
+### 它支持国际化
+
+你可以通过 props 传入 i18n 处理过的自定义数据和文本
+
 ### 属性
 
 | props | 作用 | 类型 | 默认值 |
