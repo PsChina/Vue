@@ -2,7 +2,7 @@
 
 稍微记录下 Element-UI 使用过程中需要注意的地方
 
-## table 组建选择 cell 时不支持点击任意位置选中 cell
+## el-table 组件选择 cell 时不支持点击任意位置选中 cell
 
 解决办法
 
