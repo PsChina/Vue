@@ -35,8 +35,10 @@ const someAsyncThing = function() {
   });
 };
 
-someAsyncThing().catch(function() {
-  console.log('everything is great');
+someAsyncThing().catch(function(error) {
+
+  console.log('onerror', error);
+
 });
 
 setTimeout(() => { console.log(123) }, 2000);
