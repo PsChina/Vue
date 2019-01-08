@@ -198,3 +198,4 @@ let loadImagesAsync = (...list)=>{ // 加载多张图片
 }
 ```
 
+[promsie 链](https://github.com/PsChina/Vue/tree/master/es6/promsie)

@@ -25,7 +25,7 @@ console.log(error)
 setTimeout(() => { console.log(123) }, 2000);
 ```
 
-![catch]()
+![catch](https://github.com/PsChina/Vue/blob/master/es6/promsie/demo/images/catch.png)
 
 而没有用 return 返回的 promise 则开启了另一个新的 promise 链。如果没有在新的链条上定义 catch 将无法 catch 到错误， 会被输出到控制台，但不影响后面的代码（setTimeout）继续执行。
 
@@ -54,7 +54,7 @@ console.log(error)
 setTimeout(() => { console.log(123) }, 2000);
 ```
 
-![catch]()
+![catch](https://github.com/PsChina/Vue/blob/master/es6/promsie/demo/images/no-catch.png)
 
 ## 如何用 promsie 实现类似 async await 的效果(异步任务化同步)
 
@@ -98,4 +98,4 @@ setTimeout(() => { console.log(123) }, 2000);
     }
 ```
 
-[demo]()
+[demo](https://github.com/PsChina/Vue/tree/master/es6/promsie/demo)
