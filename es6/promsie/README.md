@@ -9,20 +9,24 @@ promise 内发的错误会被 Promise.prototype.catch 捕获。
 ```js
 const someAsyncThing = function() {
   return new Promise(function(resolve, reject) {
-    // 下面一行会报错，因为x没有声明
-    resolve(x + 2);
+      setTimeout(function(){
+          console.log('1秒钟')
+          resolve()
+      },1000)
   });
 };
 
 someAsyncThing().then(function() {
-  console.log('everything is great');
-}).catch(function(error){
+  return new Promise(function(resolve, reject){
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  })
+})
+.catch(function(error){
 
 console.log(error)
 
 })
-
-setTimeout(() => { console.log(123) }, 2000);
 ```
 
 浏览器报错信息：
@@ -33,27 +37,26 @@ setTimeout(() => { console.log(123) }, 2000);
 
 ```js
 const someAsyncThing = function() {
-    new Promise(function(resolve, reject) {
-        // 下面一行会报错，因为x没有声明
-        resolve(x + 2);
-    });
-
-    return new Promise(function(){
-
-        // 什么都不做
-
-    })
+  return new Promise(function(resolve, reject) {
+      setTimeout(function(){
+          console.log('1秒钟')
+          resolve()
+      },1000)
+  });
 };
 
 someAsyncThing().then(function() {
-  console.log('everything is great');
-}).catch(function(error){
+  new Promise(function(resolve, reject){
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  })
+    return
+})
+.catch(function(error){
 
 console.log(error)
 
 })
-
-setTimeout(() => { console.log(123) }, 2000);
 ```
 
 浏览器报错信息：
