@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./ajax.js"></script>
+</html>
+<script>
+    const baseUrl = 'http://localhost:8080/images/'
+
+    const resArr = []
+
+    const urls = [
+            `${baseUrl}add.png`,
+            `${baseUrl}alipay.png`,
+            `${baseUrl}bank-card.png`,
+            `${baseUrl}cash.png`,
+            `${baseUrl}club-card.png`,
+            `${baseUrl}credits.png`,
+            `${baseUrl}top1.png`,
+            `${baseUrl}top2.png`,
+            `${baseUrl}top3.png`,
+            `${baseUrl}wechatpay.png`
+        ]
+
+    function asyncloadImage(url){
+        return new Promise(function(resolve,reject){
+
+            const image = new Image()
+
+            image.src = url
+
+            image.onload = function(){
+                resolve(image)
+            }
+
+            image.onerror = function(error){
+                reject(error)
+            }
+        })
+    }
+
+    function loadImageOneByOne(arr, currentIndex, resArr = []){
+        const url = arr[currentIndex]
+        return asyncloadImage(url).then(function(res){ // 尾调用
+            resArr[currentIndex++] = res
+            console.log(`Network ${url} done.`)
+            // debugger
+            if(currentIndex<arr.length)
+            return loadImageOneByOne(arr, currentIndex, resArr) // 尾递归
+        })
+    }
+
+    loadImageOneByOne(urls, 0, resArr)
+    
+</script>

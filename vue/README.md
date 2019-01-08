@@ -1,8 +1,9 @@
-## 手动搭建 vue webpack4.0 运行环境
+# 手动搭建 vue webpack4.0 运行环境
 
-__如果想用最新的 babel 可以选择下载 @babel/core babel-loader @babel/preset-env 代替babel-core babel-loader babel-preset-env 同时 .babelrc中的 env 要换成 @babel/env__
+__如果想用最新的 babel 可以选择下载 @babel/core babel-loader @babel/preset-env 代替babel-core babel-loader babel-preset-env 同时 .babelrc中的 env 要换成 @babel/env__。
 
 以下是旧版配置
+
 ```js
 const webpack = require('webpack') // 访问内置插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // 压缩js的插件
@@ -11,7 +12,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin') // .vue 单文件组件
 const path = require('path') // 获取路径模块
 
 function resolve (dir) { // 简写resolve
-    return path.resolve(__dirname, dir) 
+    return path.resolve(__dirname, dir)
 }
 
 module.exports = {
