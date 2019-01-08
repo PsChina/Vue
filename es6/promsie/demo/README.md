@@ -3,7 +3,7 @@
 ```bash
 git clone https://github.com/PsChina/Vue.git
 
-npm i http-server -g (mac sudo npm i http-server -g)
+npm i http-server -g ## (mac sudo npm i http-server -g)
 
 cd ./Vue/ES6/promise/demo
 
