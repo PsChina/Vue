@@ -1,4 +1,50 @@
-# promise 链
+# promise demos
+
+promise 中的错误处理和 promise链，以及 promsie 异步转同步的例子。
+
+## promsie 错误处理
+
+如果没有使用catch方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。(但是浏览器控制台会报错)
+
+promsie 内的报错不会影响外部代码的运行 setTimeout 仍然正常运行了
+
+```js
+const someAsyncThing = function() {
+  return new Promise(function(resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  });
+};
+
+someAsyncThing().then(function() {
+  console.log('everything is great');
+});
+
+setTimeout(() => { console.log(123) }, 2000);
+// Uncaught (in promise) ReferenceError: x is not defined
+// 123
+```
+
+使用 catch 能够捕获到错误并且执行 catch 内的回掉
+
+```js
+const someAsyncThing = function() {
+  return new Promise(function(resolve, reject) {
+    // 下面一行会报错，因为x没有声明
+    resolve(x + 2);
+  });
+};
+
+someAsyncThing().catch(function() {
+  console.log('everything is great');
+});
+
+setTimeout(() => { console.log(123) }, 2000);
+// onerror ReferenceError: x is not defined
+// 123
+```
+
+## promsie 链
 
 promise 内发的错误会被 Promise.prototype.catch 捕获。
 
