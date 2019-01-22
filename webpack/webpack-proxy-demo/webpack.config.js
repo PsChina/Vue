@@ -1,24 +1,25 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    entry: './entry.js',
-    output:{
-        path:__dirname + '/dist',
-        filename:'bundle.js'
+  'devServer': {
+    'proxy': {
+      '/api/*': {
+        'changeOrigin': true,
+        'pathRewrite': {'^/api': ''},
+        'secure': false,
+        // Your server api
+        'target': 'http://javaport.xnfhtech.com:8080',
+      },
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html'
-        })
-    ],
-    devServer:{
-        proxy:{
-            '/api/*': {
-                target: 'http://javaport.xnfhtech.com:8080', // your server api
-                changeOrigin: true,
-                pathRewrite: { '^/api': '' },
-                secure: false
-            }
-        }
-    }
+  },
+  'entry': './entry.js',
+  'output': {
+    'filename': 'bundle.js',
+    'path': `${__dirname}/dist`,
+  },
+  'plugins': [
+    new HtmlWebpackPlugin({
+      'template': 'index.html',
+    }),
+  ],
 }
