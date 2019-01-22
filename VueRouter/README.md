@@ -3,11 +3,13 @@
 ## Index
 
 1. [基本配置](#vue-router)
+1. [默认路由](#默认路由)
 1. [嵌套](#路由嵌套)
 1. [按需加载](#按需加载)
 1. [环境搭建](#手动搭建-webpack-环境)
 
 ## vue-router
+
 vue-router 是一个帮助我们管理 vue 多页面之间的关系的库。
 
 他是一个 vue 插件可以通过npm获取。
@@ -17,6 +19,7 @@ npm i vue-router -S
 ```
 
 因为他是一个vue插件所以我们需要使用 Vue.use 来使用它。
+
 ```js
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -24,13 +27,14 @@ Vue.use(VueRouter)
 ```
 
 然后我们需要配置路由它是一个数组
+
 ```js
 import page2 from './routes/page2'
 const routes = [
     { path:'/route-page1', component:{ template:'<div>page1</div>' } },
     { path:'/route-page2', component:{ template: page2 }, //如果你认为在js内书写html是一件很累的事 你可以 import 一个组件
     // ...
-] 
+]
 ```
 
 接下来我们就可以 new 一个路由实例了
@@ -51,15 +55,31 @@ new Vue({
 })
 ```
 
+## 默认路由
+
+在 routes 内添加一个 path 为 `/` 的路由重定向改路由路径即可。
+
+```js
+const routes = [
+    {
+        path: '/',
+        redirect:'/myHomePagePath'
+    }
+]
+```
+
 ## vue-router in html
 
 ### router-view
+
 它是一个容器用于显示路由组件 router-view 就是显示各个路由组件的
 
 ### router-link
+
 他是触发路由的按钮
 
 #### to 属性
+
 ```html
 <router-view></router-view>
 <router-link to="/route-page1">显示page1</router-link>
@@ -67,13 +87,17 @@ new Vue({
 ```
 
 #### tag 属性
+
 router-link 默认是a链接如想更改可以用 tag 修改
+
 ```html
 <router-link to="/route-page1" tag="span">显示page1</router-link>
 ```
 
 #### active-class 属性
+
 active-class 标记选中路由
+
 ```html
 <style>
     .active{
@@ -85,19 +109,21 @@ active-class 标记选中路由
 ```
 
 ### 路由嵌套
+
 路由嵌套需要routes内完成
+
 ```js
 import page2 from './routes/page2'
 import child1 from './routes/child1'
 import child2 from './routes/child2'
 const routes = [
-    { path:'/route-page1', component:{ 
+    { path:'/route-page1', component:{
         template:`
         <div>
-            这是一个含有子路由的页面 
-            <router-view><router-view> 
-            <router-link to="/route-page1/child1" >显示page1/child1</router-link> 
-            <router-link to="/route-page1/child2" >显示page1/child2</router-link> 
+            这是一个含有子路由的页面
+            <router-view><router-view>
+            <router-link to="/route-page1/child1" >显示page1/child1</router-link>
+            <router-link to="/route-page1/child2" >显示page1/child2</router-link>
         </div>
         ` },
         children:[
@@ -107,8 +133,7 @@ const routes = [
         },
     { path:'/route-page2', component:{ template: page2 }, //如果你认为在js内书写html是一件很累的事 你可以 import 一个组件
     // ...
-    
-] 
+]
 ```
 
 ## 按需加载
@@ -116,6 +141,7 @@ const routes = [
 假设页面上有 3 个路由 `page1`、`page2`、`page3` 为了优化首屏加载速度，我们应该如何配置才能使得当用户点击这个路由的时候才下载对应资源呢？ 以下便是答案：
 
 router-config.js
+
 ```js
 const Home = () => import('./pages/home')
 const Page1 = () => import('./routes/page1')
@@ -144,21 +170,22 @@ npm i @babel/plugin-syntax-dynamic-import -D
 ```
 
 webpack.config.js
+
 ```js
 module.exports = {
     module:{
         rules:[
-            { 
-                test: /\.(js|jsx)$/, 
+            {
+                test: /\.(js|jsx)$/,
                 use: [
                         { // 使得 webpack 支持 jsx语法以及 es6 ,es7 等等
-                            loader: 'babel-loader', 
-                            options:{ 
+                            loader: 'babel-loader',
+                            options:{
                                 presets:['env'], // 如果下载的是@babel/preset-env 则写 @babel/preset-env 否则写 env
                                 plugins:['syntax-dynamic-import']  // 新版本插件写法 @babel/plugin-syntax-dynamic-import
-                            } 
+                            }
                         }
-                    ] }, 
+                    ] },
         ]
     }
 }
@@ -167,6 +194,7 @@ module.exports = {
 详情请看demos [Router-Loaded-On-Demand](https://github.com/PsChina/Vue/tree/master/VueRouter/demos/Router-Loaded-On-Demand)
 
 ## 手动搭建 webpack 环境
+
 ```js
 const webpack = require('webpack') // 访问内置插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // 压缩js的插件
@@ -175,7 +203,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin') // .vue 单文件组件
 const path = require('path') // 获取路径模块
 
 function resolve (dir) { // 简写resolve
-    return path.resolve(__dirname, dir) 
+    return path.resolve(__dirname, dir)
 }
 
 module.exports = {
