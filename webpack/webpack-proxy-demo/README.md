@@ -28,4 +28,4 @@ npm install
 webpack-dev-server
 ```
 
-open [url](https://localhost:8080)
+open `https://localhost:8080`
