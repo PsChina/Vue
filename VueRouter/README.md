@@ -5,6 +5,7 @@
 1. [基本配置](#vue-router)
 1. [默认路由](#默认路由)
 1. [嵌套](#路由嵌套)
+1. [路由传参](#路由传参)
 1. [按需加载](#按需加载)
 1. [环境搭建](#手动搭建-webpack-环境)
 
@@ -134,6 +135,50 @@ const routes = [
     { path:'/route-page2', component:{ template: page2 }, //如果你认为在js内书写html是一件很累的事 你可以 import 一个组件
     // ...
 ]
+```
+
+## 路由传参
+
+```js
+import page1 from './routes/page1'
+import child2 from './routes/page2'
+const routes = [
+    {
+        path:'router/:param',
+        component: page1
+    },
+    {
+        path:'router/subattr=:param',
+        component: page2
+    }
+]
+```
+
+参数传递
+
+```html
+<router-link to="/router/参数">路由1</router-link>
+<router-link to="/router/subattr=参数">路由2</router-link>
+```
+
+```js
+// <div @click="go">路由1</div>
+export default {
+    methods:{
+        go(){
+           const param = '参数'
+           this.$router.push({
+               path:`/router/${param}`
+           })
+        }
+    }
+}
+```
+
+接收参数
+
+```html
+<div>{{$route.params.param}}</div>
 ```
 
 ## 按需加载
