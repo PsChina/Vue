@@ -112,7 +112,7 @@ function readonly(target, key, discriptor){
 }
 
 function logHello(target, key, discriptor){
-	const oldFn = target[key]
+    const oldFn = target[key]
     target[key] = function(...rest){
         console.log('Hello')
         return oldFn.call(this,...rest)
