@@ -4,6 +4,7 @@ class MyClass {
 		this.type="myClass"
 	}
 	@readonly
+	@logHello
 	getType(){
 		return this.type
 	}
@@ -31,3 +32,14 @@ a.getType = function(){
 }
 
 console.log(a.getType.toString())
+
+function logHello(target, key, discriptor){
+	const oldFn = target[key]
+    target[key] = function(...rest){
+        console.log('Hello')
+        return oldFn.call(this,...rest)
+    }
+    return target
+}
+
+console.log(a.getType())

@@ -86,6 +86,41 @@ function readonly(target, key, discriptor){
 }
 ```
 
+## 多个装饰器
+
+下面的代码给 getType 这个函数使用了两个装饰器 `readonly` 和 `logHello`
+
+`readonly` 这个装饰器使得 getType 不可更改。
+
+`logHello` 这个装饰器会使得每次调用 getType 这个函数时会先在控制台输出 hello 。
+
+```js
+class MyClass {
+	constructor(){
+		this.type="myClass"
+	}
+	@readonly
+	@logHello
+	getType(){
+		return this.type
+	}
+}
+
+function readonly(target, key, discriptor){
+	discriptor.writable = false
+	return discriptor
+}
+
+function logHello(target, key, discriptor){
+	const oldFn = target[key]
+    target[key] = function(...rest){
+        console.log('Hello')
+        return oldFn.call(this,...rest)
+    }
+    return target
+}
+```
+
 [demo](https://github.com/PsChina/Vue/tree/master/es6/decorator-demo/)
 
 (完)
