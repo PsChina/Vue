@@ -5,8 +5,8 @@
 yarn add babel-loader --dev
 yarn add @babel/core --dev
 yaen add @babel/preset-env -dev
+yarn add @babel/plugin-proposal-decorators --dev
 
-#yarn global add @babel/plugin-proposal-decorators --dev
 #yarn global add webpack-cli --dev
 #yarn global add webpack-dev-server -dev
 ```
