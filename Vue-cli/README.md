@@ -37,3 +37,24 @@ vue-cli 是一个帮我们自动配置 vue 项目运行环境的工具
     npm run dev
 ```
 
+# vue-cli 3.0
+
+关于 vue-cli 3.0 配置全局变量的问题 (definPlugin不生效，因为vue-cli里面已经有一个definPlugin了)
+
+需要如下配置
+vue.config.js
+```js
+module.exports = {
+    //...
+	chainWebpack: function(config){
+		config.plugin('define').tap(definitions => {
+			Object.assign(definitions[0]['process.env'], {
+				serverAddr: "'"+ process.env.serverAddr +"'",
+			});
+			return definitions;
+		});
+	},
+    //...
+}
+```
+
