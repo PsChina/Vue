@@ -5,7 +5,7 @@ function ajax({ method, url, data, success = () => null, error = () => null, hea
     if (headers) {
         for(const [key,value] of Object.entries(headers)){
             req.setRequestHeader(key,value)
-        }        
+        }
     }
 
     req.open(method, url, async)
