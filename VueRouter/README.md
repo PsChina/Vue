@@ -141,7 +141,7 @@ const routes = [
 
 ```js
 import page1 from './routes/page1'
-import child2 from './routes/page2'
+import page2 from './routes/page2'
 const routes = [
     {
         path:'router/:param',

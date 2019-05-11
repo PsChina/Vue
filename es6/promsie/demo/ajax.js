@@ -2,7 +2,11 @@ function ajax({ method, url, data, success = () => null, error = () => null, hea
 
     const req = new XMLHttpRequest()
 
-    if (headers) req.headers = Object.assign(req.headers,headers)
+    if (headers) {
+        for(const [key,value] of Object.entries(headers)){
+            req.setRequestHeader(key,value)
+        }
+    }
 
     req.open(method, url, async)
 
