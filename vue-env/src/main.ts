@@ -3,7 +3,7 @@ import Vue from 'vue'
 // import './scss.scss'
 import App from './App.vue'
 
-import A from './demo.ts'
+import A from './demo'
 
 new A()
 

@@ -5,7 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
     mode: 'development',
-    entry: './src/main.js',
+    entry: './src/main.ts',
     output: {
         path: path.resolve(__dirname, 'bit1.net'),
         filename: 'bundle.js'
@@ -24,6 +24,7 @@ module.exports = {
                                         "legacy": true
                                     }
                                 ],
+                                "transform-vue-jsx"
                             ],
                             presets: [
                                 [
@@ -32,20 +33,29 @@ module.exports = {
                                       "targets" : {
                                           "node": "current"
                                       }
-                                  }
+                                  },
                                 ]
                             ]
                         }
                     }
                 ]
             },
-            {test: /\.tsx?$/, use: 'ts-loader'},
+            {
+                test: /\.tsx?$/, 
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options:{
+                    appendTsSuffixTo: [/\.ts\.vue$/],
+                    appendTsxSuffixTo: [/\.tsx\.vue$/]
+                }
+            },
             {test: /\.html?$/, use: 'html-loader'},
             {test: /\.css$/, use: ['style-loader','css-loader']},
             {test: /\.(scss|sass)$/, use: ['vue-style-loader','css-loader','sass-loader']},
             {test: /\.less$/, use: ['vue-style-loader','css-loader','less-loader']},
             {
                 test: /\.vue$/,
+
                 use: [
                     {
                         loader: 'vue-loader',
@@ -56,7 +66,8 @@ module.exports = {
                                   {
                                     "legacy": true
                                   }
-                                ]
+                                ],
+                                "transform-vue-jsx"
                               ],
                               presets: [
                                   [
@@ -67,7 +78,15 @@ module.exports = {
                                         }
                                     }
                                   ]
-                              ]
+                              ],
+                              loaders: {
+                                ts: [ 
+                                  'babel-loader!ts-loader'
+                                ],
+                                tsx: [
+                                  'babel-loader!ts-loader'
+                                ]
+                              }
                         }
                     }
                 ]
@@ -98,6 +117,7 @@ module.exports = {
         // https: true
     },
     resolve:{
+        extensions:['.js','.jsx','.vue','.json','.ts','.tsx'],
         alias:{
             'vue$': 'vue/dist/vue.esm.js' 
         }

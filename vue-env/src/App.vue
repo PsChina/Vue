@@ -1,8 +1,13 @@
 <template>
-    <div>compoent {{msg}}</div>
+    <div>
+        compoent {{msg}}
+        <mycomponent/>
+    </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import mycomponent from './component.vue'
 class A{
     @before // 测试 装饰器
     log(...rest){
@@ -17,7 +22,10 @@ function before(target,name,discriptor){
     }
     return target
 }
-export default {
+export default Vue.extend({
+    components:{
+        mycomponent
+    },
     data(){
         const a = {a:'a',b:'b'}
 
@@ -48,7 +56,7 @@ export default {
     mounted(){
         this.func()
     }
-}
+})
 </script>
 
 <style>
