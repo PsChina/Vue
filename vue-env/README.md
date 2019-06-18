@@ -1,4 +1,4 @@
-# Vue + Typecript + ES6 运行环境
+# Vue + Typescript + ES6 运行环境
 
 目前支持
 
@@ -7,9 +7,15 @@
 1. async/await
 1. sass/scss/less 编译
 1. image iconfont 引入
-1. devserver 热加载
+1. devServer 热加载
 
-## run
+
+## To do list
+
+1. 支持在 Vue 组件内写 Typescript.
+1. 支持 js chunk 打包每个包大小控制在 500 kb 左右。
+
+## Run
 
 yarn
 
