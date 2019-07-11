@@ -16,3 +16,5 @@
 1. vuex
 
 1. elementUI、mintUI、iView、Vux、等ui库的介绍
+
+1. 推荐一篇解析关于diff算法的文章 https://www.cnblogs.com/wind-lanyan/p/9061684.html
