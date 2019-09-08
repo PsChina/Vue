@@ -9,7 +9,7 @@ rules 下有 2个属性
 
 2、use 你要对这类文件使用何种loader
 
-loader 的执行顺序是 从上到下 从做到右的
+loader 的执行顺序是 从上到下 从左到右的
 
 
 ## css-loader
