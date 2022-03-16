@@ -18,3 +18,5 @@
 1. elementUI、mintUI、iView、Vux、等ui库的介绍
 
 1. 推荐一篇解析关于diff算法的文章 https://www.cnblogs.com/wind-lanyan/p/9061684.html
+
+1. [Vue3源码解析笔记](https://github.com/PsChina/Vue/tree/master/Vue3)
