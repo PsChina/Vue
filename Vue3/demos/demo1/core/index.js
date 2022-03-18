@@ -1,7 +1,7 @@
 import { watchEffect } from "./reactivity/index.js";
 import { mountElement, diff } from './renderer.js';
 
-export function creatApp(rootComponent) {
+export function createApp(rootComponent) {
     return {
         mount(rootContainer) {
             const setupResult = rootComponent.setup();

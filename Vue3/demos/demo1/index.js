@@ -1,5 +1,5 @@
-import { creatApp } from './core/index.js'
+import { createApp } from './core/index.js'
 import App from './App.js'
 
 
-creatApp(App).mount(document.querySelector('#app'))
+createApp(App).mount(document.querySelector('#app'))

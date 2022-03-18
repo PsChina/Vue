@@ -15,23 +15,33 @@ function patchProp(el, key, preValue, nextValue) {
     }
 }
 
+function createDomWithVNode(vNode) {
+    const { type, props, children } = vNode;
+    // 处理 tagName 
+    const el = document.createElement(type)
+    // 虚拟dom 和真实dom 是一一对应的
+    vNode.el = el
+    // 处理 props
+    for (const key in props) {
+        patchProp(el, key, null, props[key])
+    }
+    // 处理子节点
+    if (typeof children === 'string') {
+        el.append(children)
+    } else {
+        for (const vNode of children) {
+            mountElement(vNode, el)
+        }
+    }
+    return el
+}
+
 export function mountElement(vNode, container) {
     if (typeof vNode === 'string') {
         container.append(vNode)
         return
     }
-    const { type, props, children } = vNode;
-    const el = vNode.el = document.createElement(type);
-    for (let key in props) {
-        patchProp(el, key, null, vNode.props[key]);
-    }
-    if (typeof children === 'string') {
-        el.append(children);
-    } else if (Array.isArray(children)) {
-        for (const child of children) {
-            mountElement(child, el);
-        }
-    }
+    const el = createDomWithVNode(vNode)
     container.append(el);
 }
 
@@ -66,34 +76,44 @@ export function diff(n1 = {}, n2 = {}) {
     }
 
     // 处理children 暴力法
+    const { children: oldChildren } = n1,
+        { children: newChildren } = n2;
+    // 新增 删除 替换
 
-    const { children: oldChildren = [] } = n1
-    const { children: newChildren = [] } = n2
-
-    const sameLength = Math.min(oldChildren.length, newChildren.length)
-
-    const length = Math.max(oldChildren.length, newChildren.length)
-
-    // 不同的替换
-    for (let i = 0; i < sameLength; i++) {
-        const oldChildrenItem = oldChildren[i],
-            newChildrenItem = newChildren[i];
-        if (typeof newChildrenItem === 'string') {
-            if (typeof oldChildrenItem === 'string') {
-                if (oldChildrenItem !== newChildrenItem) {
-                    el.replaceChild(document.createTextNode(newChildrenItem), el.childNodes[i])
-                }
-            } else {
-                el.replaceChild(document.createElement(newChildrenItem), el.childNodes[i])
+    // 替换
+    const minLngth = Math.min(oldChildren.length, newChildren.length)
+    //const maxLength = Math.max(oldChildren.length, newChildren.length)
+    if (typeof oldChildren === 'string') {
+        if (typeof newChildren === 'string') {
+            if (oldChildren !== newChildren) {
+                el.textContent = newChildren
             }
         } else {
-            diff(oldChildrenItem[i], newChildrenItem[i])
+            for (let vnode of newChildren) {
+                mountElement(vnode, el)
+            }
+        }
+    } else {
+        for (let i = 0; i < minLngth; i++) {
+            const newVnode = newChildren[i],
+                oldVnode = oldChildren[i];
+            if (typeof oldVnode === 'string') {
+                if (typeof newVnode === 'string') {
+                    if (oldVnode !== newVnode) {
+                        el.replaceChild(document.createTextNode(newVnode), el.childNodes[i])
+                    }
+                } else {
+                    el.replaceChild(createDomWithVNode(newVnode), el.childNodes[i])
+                }
+            } else {
+                diff(oldVnode, newVnode)
+            }
+        }
+        for (let i = minLngth; i < newChildren.length; i++) {
+            mountElement(newChildren[i], el)
         }
     }
-    // 新的比老的多就渲染
-    for (let i = sameLength; i < length; i++) {
-        mountElement(newChildren[i], el)
-    }
+
 
 
 }
