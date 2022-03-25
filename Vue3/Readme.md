@@ -62,7 +62,7 @@ reactive 的作用就是接收一个对象把它变成一个代理对象通过�
 
 1. 更新值 `Reflect.set(target, key, value,  receiver)`
 
-1. notice 通知更新
+1. trigger 通知更新
 
 
 ### effect
