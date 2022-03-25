@@ -39,7 +39,7 @@ Vue 模块结构
 
 `@vue/runtime-dom` 导出了 所有 `@vue/runtime-core` 和 `@vue/reactivity` 的 api 这个库用于确保vue的特性在运行时能够得到保证。
 
-## reacttivity 核心流程
+## reactivity 核心流程
 
 
 ![reactivity](./images/reactivity.png)
