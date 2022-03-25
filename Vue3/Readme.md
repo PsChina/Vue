@@ -68,7 +68,7 @@ reactive 的作用就是接收一个对象把它变成一个代理对象通过�
 `effect` 接收用户给到的 function， 在function里面一般会存在一些计算和赋值操作。
 
 
-当函数里面的 reacttive 对象被获取值的 key 发生更新的时候 effect 会再次执行 从而达到被赋值的容器再次更新的目的。
+当函数里面的 reactive 对象被获取值的 key 发生更新的时候 effect 会再次执行 从而达到被赋值的容器再次更新的目的。
 
 
 `effect` 接收的函数后会以函数为参数创建一个 `ReactiveEffect` 对象将 函数存储在 `fn` 上 `fn` 会被`run`函数立即执行触发get操作。
