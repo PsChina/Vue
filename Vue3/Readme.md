@@ -8,6 +8,8 @@
 
 1. [手写minivue](https://www.bilibili.com/video/BV1Rt4y1B7sC)
 
+1. [脑图](./assets/mini-vue%E8%84%91%E5%9B%BE.zip)
+
 1. [vue3源码结构的介绍](#vue3源码结构的介绍)
 
 1. [reactivity核心流程](#reactivity-核心流程)
@@ -19,13 +21,11 @@
 预习过后的练习代码 [demo01](./demos/demo1/)
 
 
-![reactivity](./images/reactivity.png)
-
 ## Vue3源码结构的介绍
 
 Vue 模块结构
 
-![vue-module-structure](./images/vue-module-structure.png)
+![vue-module-structure](./assets/images/vue-module-structure.png)
 
 
 可以看到 `vue` 直接依赖 `@vue/compiler-dom` （处理编译） 和 `@vue/runtime-dom` （处理运行时）这两个模块。
@@ -45,6 +45,8 @@ Vue 模块结构
 `@vue/runtime-dom` 导出了 所有 `@vue/runtime-core` 和 `@vue/reactivity` 的 api 这个库用于确保vue的特性在运行时能够得到保证。
 
 ## reactivity 核心流程
+
+![reactivity](./assets/images/reactivity.png)
 
 reactive 的作用就是接收一个对象把它变成一个代理对象通过代理对象去访问原来对象的值，其内部实现了依赖收集（重写get）以及通知依赖更新（重写set）的功能
 
