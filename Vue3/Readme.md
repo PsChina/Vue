@@ -116,7 +116,7 @@ reactive 的作用就是接收一个对象把它变成一个代理对象通过�
 
 1. `processElement` 同样会根据 `n1` 是否存在判断元素是否是首次渲染
 
-1. `processElement` 初始化逻辑会调用 `mountElement` 、  `mountElement` 会调用 `createElement` （vue3可以自定义渲染器比如需要通过canvas渲染就可以通过更改createElement的内部实现来达到目的） 创建真实 `dom` 元素 有子节点会调用 `mountChildren` 、  `mountChildren` 内部遍历 `vnode` 并且调用 `patch` 递归渲染 接下里会处理 `props`（默认渲染器`hostPatchProp`），最后插入父节点; `mountElement` 如果 如果发现是文本节点则会调用 `hostSetElementText` (默认渲染器) 插入文本
+1. `processElement` 初始化逻辑会调用 `mountElement` ，  `mountElement` 会调用 `createElement` （vue3可以自定义渲染器比如需要通过canvas渲染就可以通过更改createElement的内部实现来达到目的） 创建真实 `dom` 元素 有子节点会调用 `mountChildren` ，  `mountChildren` 内部遍历 `vnode` 并且调用 `patch` 递归渲染 接下里会处理 `props`（默认渲染器`hostPatchProp`），最后插入父节点; `mountElement` 如果发现是文本节点则会调用 `hostSetElementText` (默认渲染器) 插入文本
 
 1. 最终递归挂载到根元素上
 
