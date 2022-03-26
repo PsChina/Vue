@@ -17,12 +17,11 @@
 预习过后的练习代码 [demo01](./demos/demo1/)
 
 
-
-## Vue3源码结构的介绍
-
 Vue 模块结构
 
 ![vue-module-structure](./images/vue-module-structure.png)
+
+## Vue3源码结构的介绍
 
 
 可以看到 `vue` 直接依赖 `@vue/compiler-dom` （处理编译） 和 `@vue/runtime-dom` （处理运行时）这两个模块。
