@@ -14,6 +14,8 @@
 
 1. [runtime-core初始化的核心流程](#runtime-core-初始化的核心流程)
 
+1. [runtime-core更新的核心流程](#runtime-core-更新的核心流程)
+
 预习过后的练习代码 [demo01](./demos/demo1/)
 
 
@@ -130,4 +132,76 @@ reactive 的作用就是接收一个对象把它变成一个代理对象通过�
 1. `Component` 初始化会生成为一个虚拟节点 (初始化组件信息调用render函数生成vnode)
 
 1. 渲染vnode的过程中递归 `patch` 继续拆箱直到所有子元素拆解完毕生成为目标视图(默认为`dom`)
+
+
+## runtime-core 更新的核心流程
+
+1. 以在 setup 中新建一个 Ref 对象 count 并且在render函数中引用为例。
+
+1. 响应式的值发生改变 (count++) 会触发 `effect` 函数执行 `componentUpdateFn`（instance update）
+
+1. `componentUpdateFn` 通过 `isMounted` 判断进入 update 逻辑 重新调用实例的render函数获得 `nextTree` 
+
+1. 拿到 `nextTree` 与 `preTree` 给到 `patch` 方法
+
+1. `patch` 方法会根据 `nextTree` 也就是 `n2` 的类型来选择不同的处理方式  (与初始化逻辑一致)
+
+1. 如果 `n2` 的类型是元素则会调用 `processElement` 
+
+1. 在 `processElement` 中 如果 `preTree` 存在也就是 `n1` 存在则会调用 `updateElement` 逻辑
+
+1. `updateElement` 会取出 `oldProps` 和 `newProps` 以及把 `n1` 的 `el` 给 `n2` 接下来会 `patchProps` `patchChildren`
+
+1. `patchProps` 会对比新旧 props
+
+1. 如果新的props和老的props不一样那么就会调用`hostPatchProp` 此时 prevProp 和 nextProp 都有值 更新 host 的 prop 的值
+
+1. 如果老的props不存在于新的props那么就会调用`hostPatchProp` 此时 prevProp 有值 nextProp 为 null 也就是删除老的属性
+
+1. 在 `patchChildren` 的过程中如果发现节点是文本类型那么会直接判断文本节点是否一致不一致的情况会调用 `hostSetElementText` 来更新文本节点
+
+1. 如果发现节点类型是`ARRAY_CHILDREN`类型则会调用`patchKeyedChildren`来更新子节点
+
+1. `patchKeyedChildren` 是一个比较复杂的 diff 算法
+
+1. `patchKeyedChildren` 会进行双端对比去掉相同类型虚拟dom
+
+1. 剩下来的则是类型不一致的的元素的精确范围 (c1、c2 为新旧集合 e1、e2 为集合长度 i 为对比指针索引 双端对比会改变 e1、e2 的大小从而避免修改没有改变的元素)
+
+1. 如果 `i>e1 && i<=e2` 说明新节点大于就节点数量 则会调用 `patch(null,c2[i],container)` (i<=e2) 新建虚拟节点
+
+1. 如果 `i>e2 && i<=e1` 说明新节点是小于旧节点的需要把多余的节点删除 调用 `hostRemove(c1[i].el)` (i<=e1) 删除真实dom节点
+
+1. 以上处理完成了超出部分的新增或删除的元素接下来分析dom顺序变化
+
+1. 一开始会收集所有新节点的key到一个Map里面 记录下key以及key对应的位置i (__Vue中key的意义__)
+
+1. 然后会遍历所有老的虚拟节点挨个看老节点的key是否存在于新map里面 
+
+1. 如果key存在于新老节点那么会对比更新 `patch(preChild,c2[newIndex],container)`
+
+1. 如果key不存在于新节点（也就是newIndex===undefined）那么会删除这个真实dom `hostRemove(prevChild.el)`
+
+1. 然后会遍历新节点key如果这个key不存在于老节点那么新增这个节点 `patch(null,c2[i],container)`
+
+1. 如果都存在那么要则会更新节点的位置 `const anchor = i+1>= e2+1 ? null : c2[i+1]; hostInsert(nextChild.el,container,anchor&&anchor.el)` (没看明白😂)
+
+1. 这样就完成了对比
+
+    更新逻辑会在响应式的值改变的时候会触发 effect 执行 instance.update
+
+    update 会把新的虚拟节点和老的虚拟节点进行一个对比,首先会对比 props 并且更新
+
+    然后会对比 children 如果是 text 那么直接更新
+
+    如果是 array 那么则会通过 diff 算法去算出来新增删除的元素以及元素位置的移动达到最小变动的目的
+
+
+### 总结
+
+1. 更新逻辑会在响应式的值改变的时候会触发。
+
+1. 算出最小更新的点然后调用具体的渲染API更新即可。
+
+
 
