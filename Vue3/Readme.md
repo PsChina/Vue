@@ -18,6 +18,8 @@
 
 1. [runtime-core更新的核心流程](#runtime-core-更新的核心流程)
 
+1. [setup环境-集成jest做单元测试-集成ts](#setup环境-集成jest做单元测试-集成ts)
+
 预习过后的练习代码 [demo01](./demos/demo1/)
 
 
@@ -204,6 +206,98 @@ reactive 的作用就是接收一个对象把它变成一个代理对象通过�
 1. 更新逻辑会在响应式的值改变的时候会触发。
 
 1. 算出最小更新的点然后调用具体的渲染API更新即可。
+
+
+## setup环境-集成jest做单元测试-集成ts
+
+[项目demo](./demos/guide-mini-vue/)
+### 初始化项目
+
+```bash
+yarn init -y
+```
+
+### 目录结构
+
+src>reactivity>index.ts
+
+
+src>reactivity>tests>index.spec.ts
+
+### 集成 jest
+
+```
+yarn add typescript --dev
+```
+
+### 初始化 tsconfig 文件 
+
+```
+npx tsc --init
+```
+
+### 解决ts报错
+
+```bash
+yarn add jest @types/jest --dev
+```
+
+在 tsconfig 配置一下
+
+```json
+{
+ "types": ["jest"],   
+}
+```
+
+### 配置脚本
+
+package.json
+
+```json
+{
+    "script":{
+        "test":"jest"
+    }
+}
+```
+
+### 去除 ts any 类型报错
+
+tsconfig.json
+```json
+{
+     "noImplicitAny": false,
+}
+```
+
+### 配置 esmodule 支持
+
+Using Babel
+
+```bash
+yarn add --dev babel-jest @babel/core @babel/preset-env
+```
+
+Using babel with typescript
+
+```bash
+yarn add --dev @babel/preset-typescript
+```
+
+创建 babel.config.js
+
+```js
+module.exports = {
+    presets: [
+        ['@babel/preset-env', {targets: {node: 'current'}}],
+        '@babel/preset-typescript',
+      ],
+}
+```
+
+
+
 
 
 
