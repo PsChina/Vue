@@ -20,7 +20,7 @@
 
 1. [setup环境-集成jest做单元测试-集成ts](#setup环境-集成jest做单元测试-集成ts)
 
-1. [实现effect&reactive&依赖收集&触发依赖](#实现effect&reactive&依赖收集&触发依赖)
+1. [实现effect&reactive&依赖收集&触发依赖](./demos/demo03/)
 
 预习过后的练习代码 [demo01](./demos/demo01/)
 
@@ -297,11 +297,3 @@ module.exports = {
       ],
 }
 ```
-
-## 实现effect&reactive&依赖收集&触发依赖
-
-
-在 tsconfig.json 的 lib 中添加 DOM 和 ES6 类型依赖
-
-
-[demo03](./demos/demo03/)
