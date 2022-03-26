@@ -9,3 +9,14 @@ tsconfig.json
     "lib":["DOM","ES6"]
 }
 ```
+
+
+## Run
+
+```bash
+yarn install
+```
+
+```bash
+yarn test
+```
