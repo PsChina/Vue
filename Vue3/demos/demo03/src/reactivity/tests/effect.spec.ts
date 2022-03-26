@@ -10,7 +10,7 @@ describe('effect', () => {
         // 定义目标容器
         let nextAge
 
-        // 定义响应关系 nextAge 的改变随着 user.age 的 改变而改变 nextAge 比 user.age 大一
+        // 定义响应关系 nextAge 的改变随着 user.age 的改变而改变 nextAge 比 user.age 大一
         effect(() => {
             nextAge = user.age + 1
         })
