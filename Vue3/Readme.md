@@ -235,6 +235,8 @@ src>reactivity>tests>index.spec.ts
 
 ### 集成 jest
 
+添加 typescript 支持
+
 ```
 yarn add typescript --dev
 ```
