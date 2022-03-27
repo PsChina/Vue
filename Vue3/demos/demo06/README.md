@@ -14,6 +14,15 @@
 
 1. onStop 会在 stop 函数处理 runner 后被 effect 实例调用
 
+
+### 总结
+
+jest 支持 watch 如果代码会频繁修改和重构可以加上 --watch命令例如:
+
+```bash
+yarn test --watch
+```
+
 ## Run
 
 ```bash
