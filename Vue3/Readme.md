@@ -4,7 +4,7 @@
 
 课前预习 
 
-1. [预习视频](https://www.bilibili.com/video/BV1Rt4y1B7sC)
+1. [预习视频](https://www.bilibili.com/video/BV1Rt4y1B7sC)  [预习demo](./demos/demo01/)
 
 1. [手写minivue](https://www.bilibili.com/video/BV1Rt4y1B7sC)
 
@@ -24,8 +24,7 @@
 
 1. [实现effect返回runner](./demos/demo04/)
 
-预习过后的练习代码 [demo01](./demos/demo01/)
-
+1. [实现effect的scheduler功能](./demos/demo05/)
 
 ## Vue3源码结构的介绍
 
