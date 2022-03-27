@@ -28,6 +28,8 @@
 
 1. [实现effect的stop功能](./demos/demo06)
 
+1. [实现readonly功能](./demos/demo07/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
