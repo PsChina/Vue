@@ -22,6 +22,8 @@
 
 1. [实现effect&reactive&依赖收集&触发依赖](./demos/demo03/)
 
+1. [实现effect返回runner](./demos/demo04/)
+
 预习过后的练习代码 [demo01](./demos/demo01/)
 
 
