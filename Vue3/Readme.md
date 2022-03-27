@@ -239,13 +239,13 @@ src>reactivity>tests>index.spec.ts
 yarn add typescript --dev
 ```
 
-### 初始化 tsconfig 文件 
+#### 初始化 tsconfig 文件 
 
 ```
 npx tsc --init
 ```
 
-### 解决ts报错
+#### 解决ts报错
 
 ```bash
 yarn add jest @types/jest --dev
@@ -259,7 +259,7 @@ yarn add jest @types/jest --dev
 }
 ```
 
-### 配置脚本
+#### 配置脚本
 
 package.json
 
@@ -271,7 +271,7 @@ package.json
 }
 ```
 
-### 去除 ts any 类型报错
+#### 去除 ts any 类型报错
 
 tsconfig.json
 ```json
@@ -280,7 +280,7 @@ tsconfig.json
 }
 ```
 
-### 配置 esmodule 支持
+#### 配置 esmodule 支持
 
 Using Babel
 
