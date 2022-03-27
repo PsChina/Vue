@@ -14,3 +14,45 @@ yarn install
 ```bash
 yarn test
 ```
+
+
+## 具体实现
+
+effect.ts effect
+```ts
+export function effect(fn, options: any = {}) {
+    // 实例化fn 并立即执行依赖收集
+    const _effect = new ReactiveEffect(fn, options.scheduler)
+    _effect.run()
+    return _effect.run.bind(_effect)
+}
+
+```
+
+
+effect.ts trigger
+```ts
+export function trigger(target, key) {
+    // 将存储在 reactive 对象对应 key 的所有依赖取出 
+    const dep = getDep(target, key)
+    // 挨个调用 update 回调函数
+    dep.forEach(reactiveEffect => {
+        if (reactiveEffect.scheduler) {
+            reactiveEffect.scheduler()
+        } else {
+            reactiveEffect.run()
+        }
+    });
+}
+```
+
+effect.ts ReactiveEffect
+```ts
+class ReactiveEffect {
+    private _fn: any
+    constructor(fn, public scheduler) {
+        this._fn = fn
+    }
+    //...
+}
+```

@@ -1,90 +1,50 @@
-
-# 实现 effect 以及 reactive
-
-1. reactive 接收一个对象 返回一个响应式对象
-
-1. 响应式对象不等于原对象
-
-1. 响应式对象属性的值等于原对象对应属性的值
-
-1. effect 接收一个函数
-
-1. effect 接收的函数定义的是依赖关系 （计算响应式对象赋值给目标容器）
-
-1. 当响应式对象改变时 effect 接收的依赖关系函数会自动运行更新目标容器
-
-
-## 新增配置
-
-在 tsconfig.json 的 lib 中添加 DOM 和 ES6 类型依赖
-
-tsconfig.json
-```js
-{
-    "lib":["DOM","ES6"]
-}
-```
-
-
-## Run
-
-```bash
-yarn install
-```
-
-```bash
-yarn test
-```
-
-
-## 具体实现
-
-reactive.ts
-```ts
-import { trick, trigger } from "./effect"
-
-export function reactive(obj) {
-    return new Proxy(obj, {
-        get(target, key, receiver) {
-            // 依赖收集
-            trick(target, key)
-            return Reflect.get(target, key, receiver)
-        },
-        set(target, key, value, receiver) {
-            Reflect.set(target, key, value, receiver)
-            // 触发依赖
-            trigger(target, key)
-            return value
-        }
-    })
-}
-```
-
-effect.ts
-
-```ts
 // 全局的当前活跃的effect
+import { extend } from '../shared/index';
 let activeEffect
 
 // effect类
 class ReactiveEffect {
     private _fn: any
-    constructor(fn) {
+    onStop?: () => void
+    active: boolean = true
+    deps: Set<ReactiveEffect>[] = []
+    constructor(fn, public scheduler) {
         this._fn = fn
     }
     run() {
         // 把活动的 effect 实例绑定到 activeEffect
         activeEffect = this
-        this._fn()
+        let res = this._fn()
         // 依赖收集发生在 _fn 运行时触发 getter 器。
         activeEffect = null
+        return res
+    }
+    stop() {
+        if (this.active) {
+            clearupEffect(this)
+            if (this.onStop) {
+                this.onStop()
+            }
+            this.active = false
+        }
     }
 }
 
-export function effect(fn) {
+function clearupEffect(effect) {
+    effect.deps.forEach(dep => {
+        dep.delete(effect)
+    })
+    effect.deps = []
+}
+
+export function effect(fn, options: any = {}) {
     // 实例化fn 并立即执行依赖收集
-    const _effect = new ReactiveEffect(fn)
+    const _effect = new ReactiveEffect(fn, options.scheduler)
+    extend(_effect, options)
     _effect.run()
+    const runner: any = _effect.run.bind(_effect)
+    runner.effect = _effect
+    return runner
 }
 // 全局依赖存储map
 const targetMaps = new Map()
@@ -113,6 +73,7 @@ export function trick(target, key) {
     if (activeEffect) {
         // 将当前活动的回调函数 effect 存储在 reactive 对象对应 key 的 dep 内。
         dep.add(activeEffect)
+        activeEffect.deps.push(dep)
     }
 }
 // 触发依赖
@@ -121,7 +82,14 @@ export function trigger(target, key) {
     const dep = getDep(target, key)
     // 挨个调用 update 回调函数
     dep.forEach(reactiveEffect => {
-        reactiveEffect.run()
+        if (reactiveEffect.scheduler) {
+            reactiveEffect.scheduler()
+        } else {
+            reactiveEffect.run()
+        }
     });
 }
-```
+
+export function stop(runner) {
+    runner.effect.stop()
+}

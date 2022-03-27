@@ -26,6 +26,8 @@
 
 1. [实现effect的scheduler功能](./demos/demo05/)
 
+1. [实现effect的stop功能](./demos/demo06)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
