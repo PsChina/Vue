@@ -30,6 +30,8 @@
 
 1. [实现readonly功能](./demos/demo07/)
 
+1. [实现isReactive和isReadonly](./demos/demo08/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
