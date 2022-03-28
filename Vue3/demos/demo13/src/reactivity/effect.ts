@@ -79,7 +79,7 @@ function getDep(target, key) {
     return dep
 }
 
-function isTraking() {
+export function isTraking() {
     // activeEffect 和 shouldTrack 存在的情况下处于依赖收集的状态
     return activeEffect && shouldTrack
 }
@@ -90,10 +90,15 @@ export function trick(target, key) {
     if (!isTraking()) return
     const dep = getDep(target, key)
     // 将当前活动的回调函数 effect 存储在 reactive 对象对应 key 的 dep 内。
-    if (dep.has(activeEffect)) return // 避免重复收集
-    dep.add(activeEffect)
+    trickEffects(dep)
     // 反向收集依赖
     activeEffect.deps.push(dep)
+}
+
+// 添加 effect 到 dep
+export function trickEffects(dep) {
+    if (dep.has(activeEffect)) return // 避免重复收集
+    dep.add(activeEffect)
 }
 
 // 触发依赖
@@ -101,6 +106,10 @@ export function trigger(target, key) {
     // 将存储在 reactive 对象对应 key 的所有依赖取出 
     const dep = getDep(target, key)
     // 挨个调用 update 回调函数
+    triggerEffects(dep)
+}
+// 执行 effect
+export function triggerEffects(dep) {
     dep.forEach(reactiveEffect => {
         if (reactiveEffect.scheduler) {
             reactiveEffect.scheduler()

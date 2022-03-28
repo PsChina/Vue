@@ -90,6 +90,7 @@ export function trick(target, key) {
     if (!isTraking()) return
     const dep = getDep(target, key)
     // 将当前活动的回调函数 effect 存储在 reactive 对象对应 key 的 dep 内。
+    if (dep.has(activeEffect)) return // 避免重复收集
     dep.add(activeEffect)
     // 反向收集依赖
     activeEffect.deps.push(dep)
