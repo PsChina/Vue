@@ -38,6 +38,8 @@
 
 1. [实现shallowReadonly](./demos/demo11/)
 
+1. [实现isProxy](./demos/demo12/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
