@@ -36,6 +36,8 @@
 
 1. [实现reactive和readnoly嵌套对象转换](./demos/demo10/)
 
+1. [实现shallowReadonly](./demos/demo11/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
