@@ -34,6 +34,8 @@
 
 1. [优化stop功能](./demos/demo09/)
 
+1. [实现reactive和readnoly嵌套对象转换](./demos/demo10/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
