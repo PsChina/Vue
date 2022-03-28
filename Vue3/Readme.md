@@ -32,6 +32,8 @@
 
 1. [实现isReactive和isReadonly](./demos/demo08/)
 
+1. [优化stop功能](./demos/demo09/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
