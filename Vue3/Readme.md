@@ -46,6 +46,8 @@
 
 1. [实现proxyRefs](./demos/demo15/)
 
+1. [实现computed](./demos/demo16/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
