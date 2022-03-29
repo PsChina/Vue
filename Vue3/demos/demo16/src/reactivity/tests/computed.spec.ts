@@ -38,7 +38,7 @@ describe('computed', () => {
 
         // should not computed untill needed
         value.foo = 2
-        // 这里为什么是 1 次呢应为它是lazy的即便值改变了但是没有读取所以就没有调用
+        // 这里为什么是 1 次呢因为它是 lazy 的即便值改变了但是没有读取所以就没有调用
         expect(getter).toHaveBeenCalledTimes(1)
 
         // now it should compute
