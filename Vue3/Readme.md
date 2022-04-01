@@ -48,6 +48,8 @@
 
 1. [实现computed](./demos/demo16/)
 
+1. [实现初始化component](./demos/demo17/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
