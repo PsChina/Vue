@@ -50,6 +50,7 @@
 
 1. [实现初始化component](./demos/demo17/)
 
+1. [使用rollup打包](./demos/demo18/)
 ## Vue3源码结构的介绍
 
 Vue 模块结构
