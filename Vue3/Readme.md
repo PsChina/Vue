@@ -53,6 +53,9 @@
 1. [使用rollup打包](./demos/demo18/)
 
 1. [实现初始化element主流程](./demos/demo19/)
+
+1. [实现组件代理对象](./demos/demo20/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
