@@ -18,8 +18,8 @@ export const enum ShapeFlage {
 // ShapeFlags.array_children = 1
 
 // 2. 查找
-// if(ShapFlags.element)
-// if(ShapFlags.stateful_component)
+// if(shapeFlags.element)
+// if(shapeFlags.stateful_component)
 
 // 对象的方式不够高效 位运算 更高效
 

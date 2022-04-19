@@ -1,8 +1,8 @@
-const ShapFlags = {
-    element:0,
-    stateful_component:0,
-    text_children:0,
-    array_children:0
+const shapeFlags = {
+    element: 0,
+    stateful_component: 0,
+    text_children: 0,
+    array_children: 0
 }
 
 // vnode -> stateful_component
@@ -11,8 +11,8 @@ const ShapFlags = {
 // ShapeFlags.array_children = 1
 
 // 2. 查找
-// if(ShapFlags.element)
-// if(ShapFlags.stateful_component)
+// if(shapeFlags.element)
+// if(shapeFlags.stateful_component)
 
 // 对象的方式不够高效 位运算 更高效
 
