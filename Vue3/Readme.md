@@ -56,6 +56,8 @@
 
 1. [实现组件代理对象](./demos/demo20/)
 
+1. [实现shapeFlags](./demos/demo21/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
