@@ -293,7 +293,7 @@ package.json
 
 ```json
 {
-    "script":{
+    "scripts":{
         "test":"jest"
     }
 }
