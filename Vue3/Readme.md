@@ -58,6 +58,8 @@
 
 1. [实现shapeFlags](./demos/demo21/)
 
+1. [实现注册事件功能](./demos/demo22/)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
