@@ -64,6 +64,8 @@
 
 1. [实现组件emit功能](./demos/demo24)
 
+1. [实现组件slots功能](./demos/demo25)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
