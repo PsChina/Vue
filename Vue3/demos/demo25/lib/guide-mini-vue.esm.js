@@ -12,6 +12,11 @@ function createVNode(type, props, children) {
     else if (Array.isArray(children)) {
         vnode.shapeFlag |= 8 /* ARRAY_CHILDREN */;
     }
+    if (vnode.shapeFlag & 2 /* STATEFUL_COMPONENT */) {
+        if (typeof children === 'object') {
+            vnode.shapeFlag |= 16 /* SLOT_CHILDREN */;
+        }
+    }
     return vnode;
 }
 function getShapFlag(type) {
@@ -164,13 +169,27 @@ function emit(instance, event, ...args) {
         return str ? 'on' + capitalize(str) : '';
     };
     const handleName = tohandlerKey(camelize(event));
-    console.log('handleName=>', handleName);
     const handler = props[handleName];
     handler && handler(...args);
 }
 
 function initSlots(instance, children) {
-    instance.slots = Array.isArray(children) ? children : [children];
+    // instance.slots = Array.isArray(children) ? children : [children] 
+    const { vnode } = instance;
+    if (vnode.shapeFlag & 16 /* SLOT_CHILDREN */) {
+        normalizeObjectSlots(children, instance.slots);
+    }
+}
+function normalizeObjectSlots(children, slots) {
+    for (const key in children) {
+        const value = children[key];
+        // slot
+        slots[key] = (props) => normalizeSlotValue(value(props));
+    }
+    slots = slots;
+}
+function normalizeSlotValue(value) {
+    return Array.isArray(value) ? value : [value];
 }
 
 function createComponentInstance(vnode) {
@@ -293,8 +312,14 @@ function h(type, props, children) {
     return createVNode(type, props, children);
 }
 
-function renderSlots(slots) {
-    return createVNode('div', {}, slots);
+function renderSlots(slots, name, props) {
+    const slot = slots[name];
+    if (slot) {
+        if (typeof slot === 'function') {
+            return createVNode('div', {}, slot(props));
+        }
+    }
+    return {};
 }
 
 export { createApp, h, renderSlots };
