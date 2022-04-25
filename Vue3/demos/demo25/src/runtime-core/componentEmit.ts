@@ -12,7 +12,6 @@ export function emit(instance,event, ...args){
     return str ? 'on'+ capitalize(str) : ''
   }
   const handleName = tohandlerKey(camelize(event))
-  console.log('handleName=>',handleName)
   const handler = props[handleName]
   handler && handler(...args)
 }

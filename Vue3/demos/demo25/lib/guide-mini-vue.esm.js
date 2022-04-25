@@ -170,7 +170,7 @@ function emit(instance, event, ...args) {
 }
 
 function initSlots(instance, children) {
-    instance.slots = children;
+    instance.slots = Array.isArray(children) ? children : [children];
 }
 
 function createComponentInstance(vnode) {
@@ -293,4 +293,8 @@ function h(type, props, children) {
     return createVNode(type, props, children);
 }
 
-export { createApp, h };
+function renderSlots(slots) {
+    return createVNode('div', {}, slots);
+}
+
+export { createApp, h, renderSlots };
