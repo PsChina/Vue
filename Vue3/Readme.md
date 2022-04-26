@@ -66,6 +66,8 @@
 
 1. [实现组件slots功能](./demos/demo25)
 
+1. [实现Fragment和Text类型节点](./demos/demo26)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
