@@ -68,6 +68,8 @@
 
 1. [实现Fragment和Text类型节点](./demos/demo26)
 
+1. [实现getcurrentInsatnce](./demos/demo27)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
