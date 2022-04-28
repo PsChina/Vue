@@ -70,6 +70,8 @@
 
 1. [实现getcurrentInsatnce](./demos/demo27)
 
+1. [实现依赖注入功能](./demos/demo28)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
