@@ -201,13 +201,15 @@ function normalizeSlotValue(value) {
     return Array.isArray(value) ? value : [value];
 }
 
-function createComponentInstance(vnode) {
+function createComponentInstance(vnode, parent) {
     const component = {
         vnode,
         type: vnode.type,
         setupState: {},
         props: {},
         slots: {},
+        provides: parent ? parent.provides : {},
+        parent,
         emit: () => { },
     };
     component.emit = emit.bind(null, component);
@@ -249,15 +251,15 @@ function setCurrentInstance(instance) {
     currentInstance = instance;
 }
 
-function render(vnode, container) {
+function render(vnode, container, parentComponent) {
     // patch
-    patch(vnode, container);
+    patch(vnode, container, parentComponent);
 }
-function patch(vnode, container) {
+function patch(vnode, container, parentComponent) {
     const { type, shapeFlag } = vnode;
     switch (type) {
         case Fragment:
-            processFragment(vnode, container);
+            processFragment(vnode, container, processFragment);
             break;
         case Text:
             processText(vnode, container);
@@ -265,11 +267,11 @@ function patch(vnode, container) {
         default:
             // 判断 vnode 类型
             if (shapeFlag & 1 /* ELEMENT */) {
-                processElement(vnode, container);
+                processElement(vnode, container, parentComponent);
             }
             else if (shapeFlag & 2 /* STATEFUL_COMPONENT */) {
                 // 根据不同类型来处理不同的虚拟节点
-                processComponent(vnode, container);
+                processComponent(vnode, container, parentComponent);
             }
             break;
     }
@@ -279,22 +281,22 @@ function processText(vnode, container) {
     const textNode = (vnode.el = document.createTextNode(children));
     container.append(textNode);
 }
-function processFragment(vnode, container) {
-    mountChildren(vnode, container);
+function processFragment(vnode, container, parentComponent) {
+    mountChildren(vnode, container, parentComponent);
 }
-function processComponent(vnode, container) {
-    mountComponent(vnode, container);
+function processComponent(vnode, container, parentComponent) {
+    mountComponent(vnode, container, parentComponent);
 }
-function processElement(vnode, container) {
-    mountElement(vnode, container);
+function processElement(vnode, container, parentComponent) {
+    mountElement(vnode, container, parentComponent);
 }
-function mountComponent(vnode, container) {
-    const instance = createComponentInstance(vnode);
+function mountComponent(vnode, container, parentComponent) {
+    const instance = createComponentInstance(vnode, parentComponent);
     setUpcomponent(instance);
     setupRenderEffect(instance, vnode, container);
     // return instance
 }
-function mountElement(vnode, container) {
+function mountElement(vnode, container, processFragment) {
     const { type, children, shapeFlag, props } = vnode;
     const el = (vnode.el = document.createElement(type));
     // string
@@ -302,7 +304,7 @@ function mountElement(vnode, container) {
         el.textContent = children;
     }
     else if (shapeFlag & 8 /* ARRAY_CHILDREN */) {
-        mountChildren(vnode, el);
+        mountChildren(vnode, el, processFragment);
     }
     // props
     for (const key in props) {
@@ -318,15 +320,15 @@ function mountElement(vnode, container) {
     }
     container.append(el);
 }
-function mountChildren(vnode, container) {
+function mountChildren(vnode, container, parentComponent) {
     vnode.children.forEach((v) => {
-        patch(v, container);
+        patch(v, container, parentComponent);
     });
 }
 function setupRenderEffect(instance, vnode, container) {
     const { proxy } = instance;
     const subTree = instance.render.call(proxy);
-    patch(subTree, container);
+    patch(subTree, container, instance);
     // element -> mount
     vnode.el = subTree.el;
 }
@@ -356,10 +358,34 @@ function renderSlots(slots, name, props) {
 }
 
 function provide(key, value) {
+    var _a;
     // 存
+    const currentInstance = getCurrentInstance();
+    if (currentInstance) {
+        let { provides } = currentInstance;
+        const parentProvides = (_a = currentInstance === null || currentInstance === void 0 ? void 0 : currentInstance.parent) === null || _a === void 0 ? void 0 : _a.provides;
+        if (provides === parentProvides) {
+            provides = currentInstance.provides = Object.create(parentProvides ? parentProvides : null);
+        }
+        provides[key] = value;
+    }
 }
-function inject(key) {
+function inject(key, defaultValue) {
+    var _a;
     // 取
+    const currentInstance = getCurrentInstance();
+    const provides = (_a = currentInstance === null || currentInstance === void 0 ? void 0 : currentInstance.parent) === null || _a === void 0 ? void 0 : _a.provides;
+    if (provides) {
+        if (key in provides) {
+            return provides[key];
+        }
+        else if (defaultValue) {
+            if (typeof defaultValue === 'function') {
+                return defaultValue();
+            }
+            return defaultValue;
+        }
+    }
 }
 
 exports.createApp = createApp;
