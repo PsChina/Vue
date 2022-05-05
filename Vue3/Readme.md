@@ -72,6 +72,7 @@
 
 1. [实现依赖注入功能](./demos/demo28)
 
+1. [实现自定义渲染器 custom renderer](./demos/demo29)
 ## Vue3源码结构的介绍
 
 Vue 模块结构
