@@ -6,8 +6,7 @@ import { createAppAPI } from "./createApp";
 
 export function createRenderer(options){
 
-    const {createElement,patchProp,insert} = options
-
+    const {createElement: hostCreateElement,patchProp: hostPatchProp,insert: hostInsert} = options
     function render(vnode, container, parentComponent) {
         // patch
         patch(vnode, container, parentComponent)
@@ -64,7 +63,7 @@ export function createRenderer(options){
 
     function mountElement(vnode, container, processFragment) {
         const { type, children, shapeFlag, props } = vnode
-        const el = (vnode.el = createElement(type))
+        const el = (vnode.el = hostCreateElement(type))
         // string
         if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
             el.textContent = children
@@ -76,11 +75,11 @@ export function createRenderer(options){
         for (const key in props) {
             const val = props[key]
 
-            patchProp(el,key,val)
+            hostPatchProp(el,key,val)
 
         }
         // container.append(el)
-        insert(el,container)
+        hostInsert(el,container)
     }
 
     function mountChildren(vnode, container, parentComponent) {
