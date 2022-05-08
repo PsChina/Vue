@@ -2,9 +2,65 @@ const extend = Object.assign;
 function isObject(val) {
     return val !== null && typeof val === 'object';
 }
+const hasChanged = (val, newValue) => {
+    return !Object.is(val, newValue);
+};
 const hasOwn = (val, key) => Object.prototype.hasOwnProperty.call(val, key);
 
 // 全局的当前活跃的effect
+let activeEffect, shouldTrack;
+// effect 类
+class ReactiveEffect {
+    constructor(fn, scheduler) {
+        this.scheduler = scheduler;
+        this.active = true;
+        this.deps = [];
+        this._fn = fn;
+    }
+    run() {
+        // 在收集依赖之前判断当前依赖是否被停止
+        if (!this.active) {
+            // active 为false 说明已经被stop了不需要收集依赖（不需要绑定activeEffect）直接运行fn
+            return this._fn();
+        }
+        // 把活动的 effect 实例绑定到 activeEffect
+        activeEffect = this;
+        // 依赖收集没有被停止应该收集依赖
+        shouldTrack = true;
+        let res = this._fn();
+        // 依赖收集发生在 _fn 运行时触发 getter 器。
+        activeEffect = null;
+        // 收集完依赖以后关闭收集依赖开关
+        shouldTrack = false;
+        return res;
+    }
+    // 停止当前effect的依赖自动更新
+    stop() {
+        if (this.active) {
+            clearupEffect(this);
+            if (this.onStop) {
+                this.onStop();
+            }
+            //标记依赖被停止
+            this.active = false;
+        }
+    }
+}
+function clearupEffect(effect) {
+    effect.deps.forEach(dep => {
+        dep.delete(effect);
+    });
+    effect.deps = [];
+}
+function effect(fn, options = {}) {
+    // 实例化fn 并立即执行依赖收集
+    const _effect = new ReactiveEffect(fn, options.scheduler);
+    extend(_effect, options);
+    _effect.run();
+    const runner = _effect.run.bind(_effect);
+    runner.effect = _effect;
+    return runner;
+}
 // 全局依赖存储map
 const targetMaps = new Map();
 // 初始化依赖数据结构以及获取dep
@@ -20,6 +76,27 @@ function getDep(target, key) {
         depMaps.set(key, dep);
     }
     return dep;
+}
+function isTraking() {
+    // activeEffect 和 shouldTrack 存在的情况下处于依赖收集的状态
+    return activeEffect && shouldTrack;
+}
+// 依赖收集
+function trick(target, key) {
+    // 判断是否应该收集依赖
+    if (!isTraking())
+        return;
+    const dep = getDep(target, key);
+    // 将当前活动的回调函数 effect 存储在 reactive 对象对应 key 的 dep 内。
+    trickEffects(dep);
+    // 反向收集依赖
+    activeEffect.deps.push(dep);
+}
+// 添加 effect 到 dep
+function trickEffects(dep) {
+    if (dep.has(activeEffect))
+        return; // 避免重复收集
+    dep.add(activeEffect);
 }
 // 触发依赖
 function trigger(target, key) {
@@ -58,6 +135,10 @@ function createGetter(isReadonly = false, shallow = false) {
         }
         if (isObject(res)) {
             return isReadonly ? readonly(res) : reactive(res);
+        }
+        // 依赖收集
+        if (!isReadonly) {
+            trick(target, key);
         }
         return res;
     };
@@ -165,6 +246,61 @@ function normalizeSlotValue(value) {
     return Array.isArray(value) ? value : [value];
 }
 
+class RefImpl {
+    constructor(value) {
+        this.__v_isRef = true;
+        // 保存原来的值以便用Object.is(hasChanged)比较差异
+        this._rawValue = value;
+        // 值类型和对象类型分别采用不同的方式处理
+        this._value = covert(value);
+        this.dep = new Set();
+    }
+    get value() {
+        trackRefValue(this);
+        return this._value;
+    }
+    set value(newValue) {
+        if (hasChanged(this._rawValue, newValue)) {
+            this._rawValue = newValue;
+            this._value = covert(newValue);
+            triggerEffects(this.dep);
+        }
+    }
+}
+// covert 复用相同的处理方式 新的 value 如果是一个对象那么仍然需要用 reactive 包裹
+function covert(value) {
+    return isObject(value) ? reactive(value) : value;
+}
+function trackRefValue(ref) {
+    if (isTraking()) {
+        trickEffects(ref.dep);
+    }
+}
+function ref(value) {
+    return new RefImpl(value);
+}
+function isRef(ref) {
+    return !!ref.__v_isRef;
+}
+function unRef(ref) {
+    return isRef(ref) ? ref.value : ref;
+}
+function proxyRefs(ref) {
+    return new Proxy(ref, {
+        get(target, key) {
+            return unRef(Reflect.get(target, key));
+        },
+        set(target, key, value) {
+            if (isRef(target[key]) && !isRef(value)) {
+                return target[key].value = value;
+            }
+            else {
+                return Reflect.set(target, key, value);
+            }
+        }
+    });
+}
+
 function createComponentInstance(vnode, parent) {
     const component = {
         vnode,
@@ -174,6 +310,8 @@ function createComponentInstance(vnode, parent) {
         slots: {},
         provides: parent ? parent.provides : {},
         parent,
+        isMounted: false,
+        subTree: {},
         emit: () => { },
     };
     component.emit = emit.bind(null, component);
@@ -199,7 +337,7 @@ function setupStatefulComponent(instance) {
 }
 function handleSetupResult(instance, setupResult) {
     if (typeof setupResult === 'object') {
-        instance.setupState = setupResult;
+        instance.setupState = proxyRefs(setupResult);
     }
     finishComponentSetup(instance);
 }
@@ -308,42 +446,53 @@ function createRenderer(options) {
     const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options;
     function render(vnode, container, parentComponent) {
         // patch
-        patch(vnode, container, parentComponent);
+        patch(null, vnode, container, parentComponent);
     }
-    function patch(vnode, container, parentComponent) {
-        const { type, shapeFlag } = vnode;
+    // n1 代表老虚拟dom n2 代表新的虚拟节点 n1 不存在就是初始化
+    function patch(n1, n2, container, parentComponent) {
+        const { type, shapeFlag } = n2;
         switch (type) {
             case Fragment:
-                processFragment(vnode, container, processFragment);
+                processFragment(n1, n2, container, processFragment);
                 break;
             case Text:
-                processText(vnode, container);
+                processText(n1, n2, container);
                 break;
             default:
                 // 判断 vnode 类型
                 if (shapeFlag & 1 /* ELEMENT */) {
-                    processElement(vnode, container, parentComponent);
+                    processElement(n1, n2, container, parentComponent);
                 }
                 else if (shapeFlag & 2 /* STATEFUL_COMPONENT */) {
                     // 根据不同类型来处理不同的虚拟节点
-                    processComponent(vnode, container, parentComponent);
+                    processComponent(n1, n2, container, parentComponent);
                 }
                 break;
         }
     }
-    function processText(vnode, container) {
-        const { children } = vnode;
-        const textNode = (vnode.el = document.createTextNode(children));
+    function processText(n1, n2, container) {
+        const { children } = n2;
+        const textNode = (n2.el = document.createTextNode(children));
         container.append(textNode);
     }
-    function processFragment(vnode, container, parentComponent) {
-        mountChildren(vnode, container, parentComponent);
+    function processFragment(n1, n2, container, parentComponent) {
+        mountChildren(n2, container, parentComponent);
     }
-    function processComponent(vnode, container, parentComponent) {
-        mountComponent(vnode, container, parentComponent);
+    function processComponent(n1, n2, container, parentComponent) {
+        mountComponent(n2, container, parentComponent);
     }
-    function processElement(vnode, container, parentComponent) {
-        mountElement(vnode, container, parentComponent);
+    function processElement(n1, n2, container, parentComponent) {
+        if (!n1) {
+            mountElement(n2, container, parentComponent);
+        }
+        else {
+            patchElement(n1, n2);
+        }
+    }
+    function patchElement(n1, n2, container) {
+        console.log('patchElement');
+        console.log('n1', n1);
+        console.log('n2', n2);
     }
     function mountComponent(vnode, container, parentComponent) {
         const instance = createComponentInstance(vnode, parentComponent);
@@ -371,15 +520,29 @@ function createRenderer(options) {
     }
     function mountChildren(vnode, container, parentComponent) {
         vnode.children.forEach((v) => {
-            patch(v, container, parentComponent);
+            patch(null, v, container, parentComponent);
         });
     }
     function setupRenderEffect(instance, vnode, container) {
-        const { proxy } = instance;
-        const subTree = instance.render.call(proxy);
-        patch(subTree, container, instance);
-        // element -> mount
-        vnode.el = subTree.el;
+        effect(() => {
+            if (!instance.isMounted) {
+                //init
+                const { proxy } = instance;
+                const subTree = (instance.subTree = instance.render.call(proxy));
+                patch(null, subTree, container, instance);
+                // element -> mount
+                vnode.el = subTree.el;
+                instance.isMounted = true;
+            }
+            else {
+                // update
+                const { proxy } = instance;
+                const subTree = instance.render.call(proxy);
+                const prevSubTree = instance.subTree;
+                instance.subTree = subTree;
+                patch(prevSubTree, subTree, container, instance);
+            }
+        });
     }
     return {
         createApp: createAppAPI(render)
@@ -411,4 +574,4 @@ function createApp(...args) {
     return renderer.createApp(...args);
 }
 
-export { createApp, createRenderer, createTextVNode, getCurrentInstance, h, inject, provide, renderSlots };
+export { createApp, createRenderer, createTextVNode, getCurrentInstance, h, inject, provide, proxyRefs, ref, renderSlots };
