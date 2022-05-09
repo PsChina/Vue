@@ -443,7 +443,7 @@ function createAppAPI(render) {
 }
 
 function createRenderer(options) {
-    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options;
+    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
     function render(vnode, container, parentComponent) {
         // patch
         patch(null, vnode, container, parentComponent);
@@ -476,7 +476,7 @@ function createRenderer(options) {
         container.append(textNode);
     }
     function processFragment(n1, n2, container, parentComponent) {
-        mountChildren(n2, container, parentComponent);
+        mountChildren(n2.children, container, parentComponent);
     }
     function processComponent(n1, n2, container, parentComponent) {
         mountComponent(n2, container, parentComponent);
@@ -486,13 +486,47 @@ function createRenderer(options) {
             mountElement(n2, container, parentComponent);
         }
         else {
-            patchElement(n1, n2);
+            patchElement(n1, n2, container, parentComponent);
         }
     }
-    function patchElement(n1, n2, container) {
+    function patchElement(n1, n2, container, parentComponent) {
         console.log('patchElement');
         console.log('n1', n1);
         console.log('n2', n2);
+        n1.props || {};
+        n2.props || {};
+        const el = (n2.el = n1.el);
+        patchChildren(n1, n2, el, parentComponent);
+        //patchProps(el, oldProps, newProps)
+    }
+    function patchChildren(n1, n2, container, parentComponent) {
+        const prevShapeFlag = n1.shapeFlag;
+        const c1 = n1.children;
+        const { shapeFlag } = n2;
+        const c2 = n2.children;
+        if (shapeFlag & 4 /* TEXT_CHILDREN */) {
+            if (prevShapeFlag & 8 /* ARRAY_CHILDREN */) { // 老节点是Array就清空
+                // 删除子节点
+                unmountChildren(n1.children);
+            }
+            if (c1 !== c2) { // 清空过后的老节点或者是文本节点
+                // 设置text
+                hostSetElementText(container, c2);
+            }
+        }
+        else { // 新节点是数组
+            if (prevShapeFlag & 4 /* TEXT_CHILDREN */) {
+                hostSetElementText(container, '');
+                mountChildren(c2, container, parentComponent); // 挂载新节点
+            }
+        }
+    }
+    function unmountChildren(children) {
+        for (let i = 0; i < children.length; i++) {
+            const el = children[i].el;
+            // remove
+            hostRemove(el);
+        }
     }
     function mountComponent(vnode, container, parentComponent) {
         const instance = createComponentInstance(vnode, parentComponent);
@@ -508,7 +542,7 @@ function createRenderer(options) {
             el.textContent = children;
         }
         else if (shapeFlag & 8 /* ARRAY_CHILDREN */) {
-            mountChildren(vnode, el, processFragment);
+            mountChildren(vnode.children, el, processFragment);
         }
         // props
         for (const key in props) {
@@ -518,8 +552,8 @@ function createRenderer(options) {
         // container.append(el)
         hostInsert(el, container);
     }
-    function mountChildren(vnode, container, parentComponent) {
-        vnode.children.forEach((v) => {
+    function mountChildren(children, container, parentComponent) {
+        children.forEach((v) => {
             patch(null, v, container, parentComponent);
         });
     }
@@ -565,10 +599,21 @@ function patchProp(el, key, val) {
 function insert(el, container) {
     container.append(el);
 }
+function remove(child) {
+    const parent = child.parentNode;
+    if (parent) {
+        parent.removeChild(child);
+    }
+}
+function setElementText(el, text) {
+    el.textContent = text;
+}
 const renderer = createRenderer({
     createElement,
     patchProp,
-    insert
+    insert,
+    remove,
+    setElementText
 });
 function createApp(...args) {
     return renderer.createApp(...args);
