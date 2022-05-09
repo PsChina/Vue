@@ -75,6 +75,9 @@
 1. [实现自定义渲染器 custom renderer](./demos/demo29)
 
 1. [更新element流程搭建](./demos/demo30/)
+
+1. [更新element的children](./demos/demo31)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
