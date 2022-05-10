@@ -9,7 +9,9 @@ export function createRenderer(options){
 
     const {createElement: hostCreateElement,
         patchProp: hostPatchProp,
-        insert: hostInsert
+        insert: hostInsert,
+        remove: hostRemove,
+        setElementText:hostSetElementText
     } = options
     function render(vnode, container, parentComponent) {
         // patch
@@ -71,7 +73,33 @@ export function createRenderer(options){
         const newProps = n2.props || EMPTY_OBJ
         const el = (n2.el = n1.el)
         patchProps(el, oldProps, newProps)
+        patchChildren(n1,n2,el, parentComponent)
 
+    }
+
+    function patchChildren(n1,n2, container, parentComponent){ // n1 老节点 n2 新节点
+        const prevShapeFlag = n1.shapeFlag
+        const c1 = n1.children
+        const { shapeFlag } = n2
+        const c2 = n2.children
+        if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
+            if(prevShapeFlag & ShapeFlags.ARRAY_CHILDREN){ // 老节点是Array就清空
+                // 删除子节点
+                unmountChildren(n1.children)
+            }
+            if(c1!==c2){ // 清空过后的老节点或者是文本节点
+                // 设置text
+                hostSetElementText(container,c2)
+            }   
+        } else { // 新节点是数组
+            if(prevShapeFlag & ShapeFlags.TEXT_CHILDREN){
+                hostSetElementText(container,'')
+                mountChildren(c2,container,parentComponent) // 挂载新节点
+            } else { // 新老节点都是数组
+
+            }
+        }
+        
     }
 
     function patchProps(el,oldProps,newProps){
@@ -90,6 +118,14 @@ export function createRenderer(options){
                     }
                 }
             }
+        }
+    }
+
+    function unmountChildren(children){
+        for(let i = 0; i<children.length; i++){
+            const el = children[i].el
+            // remove
+            hostRemove(el)
         }
     }
 

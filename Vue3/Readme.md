@@ -76,7 +76,9 @@
 
 1. [更新element流程搭建](./demos/demo30/)
 
-1. [更新element的children](./demos/demo31)
+1. [更新element的props](./demos/demo31)
+
+1. [更新element的children](./demos/demo32)
 
 ## Vue3源码结构的介绍
 

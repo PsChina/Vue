@@ -1,4 +1,4 @@
-# 更新 element 的 props
+# 更新 element 的 children
 
 
 

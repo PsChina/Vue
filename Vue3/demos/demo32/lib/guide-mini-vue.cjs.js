@@ -1,3 +1,7 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 const extend = Object.assign;
 const EMPTY_OBJ = {};
 function isObject(val) {
@@ -444,7 +448,7 @@ function createAppAPI(render) {
 }
 
 function createRenderer(options) {
-    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options;
+    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
     function render(vnode, container, parentComponent) {
         // patch
         patch(null, vnode, container, parentComponent);
@@ -487,7 +491,7 @@ function createRenderer(options) {
             mountElement(n2, container, parentComponent);
         }
         else {
-            patchElement(n1, n2);
+            patchElement(n1, n2, container, parentComponent);
         }
     }
     function patchElement(n1, n2, container, parentComponent) {
@@ -498,6 +502,29 @@ function createRenderer(options) {
         const newProps = n2.props || EMPTY_OBJ;
         const el = (n2.el = n1.el);
         patchProps(el, oldProps, newProps);
+        patchChildren(n1, n2, el, parentComponent);
+    }
+    function patchChildren(n1, n2, container, parentComponent) {
+        const prevShapeFlag = n1.shapeFlag;
+        const c1 = n1.children;
+        const { shapeFlag } = n2;
+        const c2 = n2.children;
+        if (shapeFlag & 4 /* TEXT_CHILDREN */) {
+            if (prevShapeFlag & 8 /* ARRAY_CHILDREN */) { // 老节点是Array就清空
+                // 删除子节点
+                unmountChildren(n1.children);
+            }
+            if (c1 !== c2) { // 清空过后的老节点或者是文本节点
+                // 设置text
+                hostSetElementText(container, c2);
+            }
+        }
+        else { // 新节点是数组
+            if (prevShapeFlag & 4 /* TEXT_CHILDREN */) {
+                hostSetElementText(container, '');
+                mountChildren(c2, container, parentComponent); // 挂载新节点
+            }
+        }
     }
     function patchProps(el, oldProps, newProps) {
         if (oldProps !== newProps) {
@@ -515,6 +542,13 @@ function createRenderer(options) {
                     }
                 }
             }
+        }
+    }
+    function unmountChildren(children) {
+        for (let i = 0; i < children.length; i++) {
+            const el = children[i].el;
+            // remove
+            hostRemove(el);
         }
     }
     function mountComponent(vnode, container, parentComponent) {
@@ -593,13 +627,33 @@ function patchProp(el, key, preVal, nextVal) {
 function insert(el, container) {
     container.append(el);
 }
+function remove(child) {
+    const parent = child.parentNode;
+    if (parent) {
+        parent.removeChild(child);
+    }
+}
+function setElementText(el, text) {
+    el.textContent = text;
+}
 const renderer = createRenderer({
     createElement,
     patchProp,
-    insert
+    insert,
+    remove,
+    setElementText
 });
 function createApp(...args) {
     return renderer.createApp(...args);
 }
 
-export { createApp, createRenderer, createTextVNode, getCurrentInstance, h, inject, provide, proxyRefs, ref, renderSlots };
+exports.createApp = createApp;
+exports.createRenderer = createRenderer;
+exports.createTextVNode = createTextVNode;
+exports.getCurrentInstance = getCurrentInstance;
+exports.h = h;
+exports.inject = inject;
+exports.provide = provide;
+exports.proxyRefs = proxyRefs;
+exports.ref = ref;
+exports.renderSlots = renderSlots;

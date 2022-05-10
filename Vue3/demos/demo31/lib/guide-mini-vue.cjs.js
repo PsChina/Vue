@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const extend = Object.assign;
+const EMPTY_OBJ = {};
 function isObject(val) {
     return val !== null && typeof val === 'object';
 }
@@ -10,6 +11,12 @@ const hasChanged = (val, newValue) => {
     return !Object.is(val, newValue);
 };
 const hasOwn = (val, key) => Object.prototype.hasOwnProperty.call(val, key);
+const capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+const tohandlerKey = (str) => {
+    return str ? 'on' + capitalize(str) : '';
+};
 
 // 全局的当前活跃的effect
 let activeEffect, shouldTrack;
@@ -219,12 +226,6 @@ function emit(instance, event, ...args) {
         return str.replace(/-(\w)/g, (_, c) => {
             return c ? c.toUpperCase() : '';
         });
-    };
-    const capitalize = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-    const tohandlerKey = (str) => {
-        return str ? 'on' + capitalize(str) : '';
     };
     const handleName = tohandlerKey(camelize(event));
     const handler = props[handleName];
@@ -447,7 +448,7 @@ function createAppAPI(render) {
 }
 
 function createRenderer(options) {
-    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
+    const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options;
     function render(vnode, container, parentComponent) {
         // patch
         patch(null, vnode, container, parentComponent);
@@ -490,46 +491,34 @@ function createRenderer(options) {
             mountElement(n2, container, parentComponent);
         }
         else {
-            patchElement(n1, n2, container, parentComponent);
+            patchElement(n1, n2);
         }
     }
     function patchElement(n1, n2, container, parentComponent) {
         console.log('patchElement');
         console.log('n1', n1);
         console.log('n2', n2);
-        n1.props || {};
-        n2.props || {};
+        const oldProps = n1.props || EMPTY_OBJ;
+        const newProps = n2.props || EMPTY_OBJ;
         const el = (n2.el = n1.el);
-        patchChildren(n1, n2, el, parentComponent);
-        //patchProps(el, oldProps, newProps)
+        patchProps(el, oldProps, newProps);
     }
-    function patchChildren(n1, n2, container, parentComponent) {
-        const prevShapeFlag = n1.shapeFlag;
-        const c1 = n1.children;
-        const { shapeFlag } = n2;
-        const c2 = n2.children;
-        if (shapeFlag & 4 /* TEXT_CHILDREN */) {
-            if (prevShapeFlag & 8 /* ARRAY_CHILDREN */) { // 老节点是Array就清空
-                // 删除子节点
-                unmountChildren(n1.children);
+    function patchProps(el, oldProps, newProps) {
+        if (oldProps !== newProps) {
+            for (const key in newProps) {
+                const prevProp = oldProps[key];
+                const nextProp = newProps[key];
+                if (prevProp !== nextProp) {
+                    hostPatchProp(el, key, prevProp, nextProp);
+                }
             }
-            if (c1 !== c2) { // 清空过后的老节点或者是文本节点
-                // 设置text
-                hostSetElementText(container, c2);
+            if (oldProps !== EMPTY_OBJ) {
+                for (const key in oldProps) {
+                    if (!(key in newProps)) {
+                        hostPatchProp(el, key, oldProps[key], null);
+                    }
+                }
             }
-        }
-        else { // 新节点是数组
-            if (prevShapeFlag & 4 /* TEXT_CHILDREN */) {
-                hostSetElementText(container, '');
-                mountChildren(c2, container, parentComponent); // 挂载新节点
-            }
-        }
-    }
-    function unmountChildren(children) {
-        for (let i = 0; i < children.length; i++) {
-            const el = children[i].el;
-            // remove
-            hostRemove(el);
         }
     }
     function mountComponent(vnode, container, parentComponent) {
@@ -551,7 +540,7 @@ function createRenderer(options) {
         // props
         for (const key in props) {
             const val = props[key];
-            hostPatchProp(el, key, val);
+            hostPatchProp(el, key, null, val);
         }
         // container.append(el)
         hostInsert(el, container);
@@ -590,34 +579,28 @@ function createRenderer(options) {
 function createElement(type) {
     return document.createElement(type);
 }
-function patchProp(el, key, val) {
+function patchProp(el, key, preVal, nextVal) {
     const isOn = (key) => /^on[A-Z]/.test(key);
     if (isOn(key)) {
         const event = key.slice(2).toLowerCase();
-        el.addEventListener(event, val);
+        el.addEventListener(event, nextVal);
     }
     else {
-        el.setAttribute(key, val);
+        if (nextVal === undefined || nextVal === null) {
+            el.removeAttribute(key);
+        }
+        else {
+            el.setAttribute(key, nextVal);
+        }
     }
 }
 function insert(el, container) {
     container.append(el);
 }
-function remove(child) {
-    const parent = child.parentNode;
-    if (parent) {
-        parent.removeChild(child);
-    }
-}
-function setElementText(el, text) {
-    el.textContent = text;
-}
 const renderer = createRenderer({
     createElement,
     patchProp,
-    insert,
-    remove,
-    setElementText
+    insert
 });
 function createApp(...args) {
     return renderer.createApp(...args);
