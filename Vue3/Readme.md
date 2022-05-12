@@ -80,6 +80,8 @@
 
 1. [更新element的children](./demos/demo32)
 
+1. [更新element的children-双端对比diff算法（1）](./demos/demo33)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
