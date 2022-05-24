@@ -361,6 +361,7 @@ function createVNode(type, props, children) {
         type,
         props,
         children,
+        key: props && props.key,
         shapeFlag: getShapFlag(type),
         el: null
     };
@@ -520,7 +521,30 @@ function createRenderer(options) {
                 hostSetElementText(container, '');
                 mountChildren(c2, container, parentComponent); // 挂载新节点
             }
+            else { // 新老节点都是数组
+                patchKeyedChildren(c1, c2, container, parentComponent);
+            }
         }
+    }
+    function patchKeyedChildren(c1, c2, container, parentComponent) {
+        let i = 0;
+        let e1 = c1.length - 1;
+        let e2 = c2.length - 1;
+        function isSomeVNodeType(n1, n2) {
+            return n1.type === n2.type && n1.key === n2.key;
+        }
+        while (i <= e1 && i <= e2) {
+            const n1 = c1[i];
+            const n2 = c2[i];
+            if (isSomeVNodeType(n1, n2)) {
+                patch(n1, n2, container, parentComponent);
+            }
+            else {
+                break;
+            }
+            i++;
+        }
+        console.log('i=>', i);
     }
     function patchProps(el, oldProps, newProps) {
         if (oldProps !== newProps) {
