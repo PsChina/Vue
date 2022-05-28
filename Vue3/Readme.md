@@ -80,7 +80,9 @@
 
 1. [更新element的children](./demos/demo32)
 
-1. [更新element的children-双端对比diff算法（1）](./demos/demo33)
+1. [更新element的children-双端对比diff算法(1)](./demos/demo33)
+
+1. [更新element的child-双端对比diff算法(2)](./demos/demo34)
 
 ## Vue3源码结构的介绍
 
