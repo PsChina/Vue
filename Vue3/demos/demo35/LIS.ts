@@ -1,10 +1,3 @@
-# 更新 element 的 children - 双端对比 diff 算法（3）
-
-实现删除多余节点和更新老节点的功能
-
-
-最长递增子序列
-```ts
 // 最长递增子序列
 function LIS(nums) {
     // 初始化动态规划容器，获取数据总长度
@@ -52,16 +45,3 @@ function LIS(nums) {
     // 返回最大递增子序列
     return subArrayDP[maxIndex]
 };
-```
-
-## Run
-
-```bash
-yarn install
-```
-
-```bash
-yarn build --watch
-```
-
-
