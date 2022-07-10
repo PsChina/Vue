@@ -71,25 +71,73 @@ import { ref, h } from "../../../lib/guide-mini-vue.esm.js";
 
 // 中间对比
 
+// const prevChildren = [
+//   h("div", { key: "A" }, "A"),
+//   h("div", { key: "B" }, "B"),
+//   h("div", { key: "C", id: "prev-c" }, "C"),
+//   h("div", { key: "G" }, "G"),
+//   h("div", { key: "K" }, "K"),
+//   h("div", { key: "L" }, "L"),
+//   h("div", { key: "E" }, "E"),
+//   h("div", { key: "F" }, "F"),
+// ];
+
+// const nextChildren = [
+//   h("div", { key: "A" }, "A"),
+//   h("div", { key: "B" }, "B"),
+//   h("div", { key: "G" }, "G"),
+//   h("div", { key: "C", id: "next-c" }, "C"),
+//   h("div", { key: "E" }, "E"),
+//   h("div", { key: "F" }, "F"),
+// ];
+
+// 最长递增子序列测试1
+
+// const prevChildren = [
+//   h("div", { key: "A" }, "A"),
+//   h("div", { key: "B" }, "B"),
+//   h("div", { key: "C" }, "C"),
+//   h("div", { key: "D" }, "D"),
+//   h("div", { key: "E" }, "E"),
+//   h("div", { key: "F" }, "F"),
+//   h("div", { key: "G" }, "G"),
+// ];
+
+// const nextChildren = [
+//   h("div", { key: "A" }, "A"),
+//   h("div", { key: "B" }, "B"),
+//   h("div", { key: "E" }, "E"),
+//   h("div", { key: "C" }, "C"),
+//   h("div", { key: "D" }, "D"),
+//   h("div", { key: "D2" }, "D2"),
+//   h("div", { key: "F" }, "F"),
+//   h("div", { key: "G" }, "G"),
+// ];
+
+// 最长递增子序列测试2
+
 const prevChildren = [
   h("div", { key: "A" }, "A"),
   h("div", { key: "B" }, "B"),
-  h("div", { key: "C", id: "prev-c" }, "C"),
-  h("div", { key: "G" }, "G"),
-  h("div", { key: "K" }, "K"),
-  h("div", { key: "L" }, "L"),
+  h("div", { key: "C" }, "C"),
+  h("div", { key: "D" }, "D"),
   h("div", { key: "E" }, "E"),
+  h("div", { key: "Z" }, "Z"),
   h("div", { key: "F" }, "F"),
+  h("div", { key: "G" }, "G"),
 ];
 
 const nextChildren = [
   h("div", { key: "A" }, "A"),
   h("div", { key: "B" }, "B"),
-  h("div", { key: "G" }, "G"),
-  h("div", { key: "C", id: "next-c" }, "C"),
+  h("div", { key: "D" }, "D"),
+  h("div", { key: "C" }, "C"),
+  h("div", { key: "Y" }, "Y"),
   h("div", { key: "E" }, "E"),
   h("div", { key: "F" }, "F"),
+  h("div", { key: "G" }, "G"),
 ];
+
 
 export default {
   name: "ArrayToArray",
