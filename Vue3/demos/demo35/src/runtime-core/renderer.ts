@@ -212,7 +212,7 @@ export function createRenderer(options){
                     // 新增节点
                     patch(null, nextChild, container, parentComponent, anchor)
                 } else  if(moved){
-                    if(j < 0|| i !== increasingNewIndexSequence[j]){
+                    if(j < 0 || i !== increasingNewIndexSequence[j]){
                         hostInsert(nextChild.el, container, anchor)
                     } else {
                         j--
