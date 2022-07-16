@@ -88,6 +88,8 @@
 
 1. [实现组件更新功能](./demos/demo36)
 
+1. [实现nextTick功能](./demos/demo37)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
