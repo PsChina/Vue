@@ -86,6 +86,8 @@
 
 1. [更新element的child-双端对比diff算法(3)](./demos/demo35)
 
+1. [实现组件更新功能](./demos/demo36)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
