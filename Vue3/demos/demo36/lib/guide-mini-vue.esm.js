@@ -196,7 +196,8 @@ function initProps(instance, rawProps) {
 
 const publicPropertiesMap = {
     $el: (i) => i.vnode.el,
-    $slots: (i) => i.slots
+    $slots: (i) => i.slots,
+    $props: (i) => i.props,
 };
 const PublicInstanceProxyHandlers = {
     get({ _: instance }, key) {
@@ -361,6 +362,7 @@ function createVNode(type, props, children) {
         type,
         props,
         children,
+        component: null,
         key: props && props.key,
         shapeFlag: getShapFlag(type),
         el: null
@@ -444,6 +446,17 @@ function createAppAPI(render) {
     };
 }
 
+function shouldUpdateComponent(n1, n2) {
+    const { props: prevProps } = n1;
+    const { props: nextProps } = n2;
+    for (const key in nextProps) {
+        if (nextProps[key] !== prevProps[key]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function createRenderer(options) {
     const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
     function render(vnode, container) {
@@ -481,7 +494,19 @@ function createRenderer(options) {
         mountChildren(n2.children, container, parentComponent, anchor);
     }
     function processComponent(n1, n2, container, parentComponent, anchor) {
-        mountComponent(n2, container, parentComponent, anchor);
+        if (!n1) {
+            mountComponent(n2, container, parentComponent, anchor);
+        }
+        else {
+            updateComponent(n1, n2);
+        }
+    }
+    function updateComponent(n1, n2) {
+        if (shouldUpdateComponent(n1, n2)) {
+            const instance = n2.component = n1.component;
+            instance.next = n2;
+            instance.update();
+        }
     }
     function processElement(n1, n2, container, parentComponent, anchor) {
         if (!n1) {
@@ -668,7 +693,7 @@ function createRenderer(options) {
         }
     }
     function mountComponent(vnode, container, parentComponent, anchor) {
-        const instance = createComponentInstance(vnode, parentComponent);
+        const instance = (vnode.component = createComponentInstance(vnode, parentComponent));
         setUpcomponent(instance);
         setupRenderEffect(instance, vnode, container, anchor);
         // return instance
@@ -697,7 +722,7 @@ function createRenderer(options) {
         });
     }
     function setupRenderEffect(instance, vnode, container, anchor) {
-        effect(() => {
+        instance.update = effect(() => {
             if (!instance.isMounted) {
                 //init
                 const { proxy } = instance;
@@ -709,7 +734,11 @@ function createRenderer(options) {
             }
             else {
                 // update
-                const { proxy } = instance;
+                const { proxy, vnode, next } = instance;
+                if (next) {
+                    next.el = vnode.el;
+                    updateComponentPreRender(instance, next);
+                }
                 const subTree = instance.render.call(proxy);
                 const prevSubTree = instance.subTree;
                 instance.subTree = subTree;
@@ -720,6 +749,11 @@ function createRenderer(options) {
     return {
         createApp: createAppAPI(render)
     };
+}
+function updateComponentPreRender(instance, nextVnode) {
+    instance.vnode = nextVnode;
+    instance.next = null;
+    instance.props = nextVnode.props;
 }
 function getSequence(arr) {
     const p = arr.slice();
