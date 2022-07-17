@@ -461,6 +461,28 @@ function shouldUpdateComponent(n1, n2) {
     return false;
 }
 
+const queue = [];
+let isFlushPending = false;
+const p = Promise.resolve();
+function nextTick(fn) {
+    return fn ? p.then(fn) : p;
+}
+function queueJobs(job) {
+    if (isFlushPending)
+        return;
+    isFlushPending = true;
+    if (!queue.includes(job)) {
+        queue.push(job);
+    }
+    nextTick(() => {
+        isFlushPending = false;
+        let job;
+        while (job = queue.shift()) {
+            job && job();
+        }
+    });
+}
+
 function createRenderer(options) {
     const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
     function render(vnode, container) {
@@ -748,6 +770,10 @@ function createRenderer(options) {
                 instance.subTree = subTree;
                 patch(prevSubTree, subTree, container, instance, anchor);
             }
+        }, {
+            scheduler() {
+                queueJobs(instance.update);
+            }
         });
     }
     return {
@@ -848,6 +874,7 @@ exports.createTextVNode = createTextVNode;
 exports.getCurrentInstance = getCurrentInstance;
 exports.h = h;
 exports.inject = inject;
+exports.nextTick = nextTick;
 exports.provide = provide;
 exports.proxyRefs = proxyRefs;
 exports.ref = ref;
