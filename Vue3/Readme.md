@@ -90,6 +90,8 @@
 
 1. [实现nextTick功能](./demos/demo37)
 
+1. [编译模块概述](#编译模块概述)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
@@ -364,3 +366,25 @@ module.exports = {
       ],
 }
 ```
+
+
+## 编译模块概述
+
+编译模块就是把 `template` 编译成 `render` 函数
+
+
+1. template
+ 
+通过 parse 变成下面的 ast
+
+
+2. ast
+
+通过 transfrom 修改 ast
+
+
+3. 修改后的 ast
+
+通过 codegen 生成一个 render 函数
+
+
