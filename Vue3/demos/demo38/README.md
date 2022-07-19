@@ -83,7 +83,7 @@ yarn install
 ```
 
 ```bash
-yarn build --watch
+yarn test --watch
 ```
 
 
