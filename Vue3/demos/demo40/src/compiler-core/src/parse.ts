@@ -31,8 +31,6 @@ function parseChildren(context:ParserContext){
     }
 
     nodes.push(node)
-
-
     return nodes
 }
 
@@ -127,27 +125,3 @@ function createRoot(children){
     }
 }
 
-
-interface Person {
-    name: string;
-    age: number;
-} 
-
-interface Guang {
-    name: string;
-    age: number;
-    hobbies: string[]
-}
-
-
-let printHobbies: (guang: Guang) => void;
-
-printHobbies = (guang) => {
-    console.log(guang.hobbies);
-}
-
-let printName: (person: Person) => void;
-
-printName = (person) => {
-    console.log(person.name);
-}

@@ -1,4 +1,5 @@
 {
     "vetur.experimental.templateInterpolationService": true,
-    "javascript.implicitProjectConfig.experimentalDecorators": true
+    "javascript.implicitProjectConfig.experimentalDecorators": true,
+    "editor.formatOnSave": true
 }
