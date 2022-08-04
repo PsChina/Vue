@@ -98,6 +98,8 @@
 
 1. [实现解析text功能](./demos/demo40)
 
+1. [实现解析三种联合类型template](./demos/demo41)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
