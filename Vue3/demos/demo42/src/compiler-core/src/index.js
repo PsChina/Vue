@@ -1,7 +1,3 @@
-# parse 的实现原理 & 有限状态机
-
-index.js
-```js
 function match_ab_c_or_d_index(str){
     const result = []
     let i,startIndex,endIndex;
@@ -53,16 +49,3 @@ function match_ab_c_or_d_index(str){
 const result =  match_ab_c_or_d_index('111ababcbckkk,abd,123abc')
 
 console.log(result)
-```
-
-## Run
-
-```bash
-yarn install
-```
-
-```bash
-yarn test --watch
-```
-
-
