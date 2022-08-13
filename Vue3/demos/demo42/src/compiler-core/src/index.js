@@ -62,3 +62,55 @@ const result =  match_ab_c_or_d_index('111ababcbckkk,abd,123abc')
 
 // 输出结果
 console.log(result)
+
+
+// 通用版
+function generatorMatchFunc(pattern){
+    const res = []
+    let states = [], startIndex,endIndex, resultIndex
+    for(let i = 0; i < pattern.length; i++){
+        const patternChar = pattern[i]
+        const state = function(char){
+            if(i === 0){
+                startIndex = resultIndex
+            }
+            if(i === pattern.length - 1){
+                endIndex = resultIndex
+            }
+           return char === patternChar
+        }
+        states.push(state)
+    }
+    let currentStateIndex = 0
+    return function(str){
+        for(resultIndex = 0; resultIndex < str.length; resultIndex++){
+            const char = str[resultIndex]
+            const func = states[currentStateIndex]
+            let nextIndexFlag = false
+            if(func instanceof Function){
+                nextIndexFlag = func(char)
+            }
+            currentStateIndex = nextIndexFlag ? currentStateIndex + 1 : 0
+            currentStateIndex = currentStateIndex < 0 ? 0 : currentStateIndex
+            if(currentStateIndex === 0){
+                currentStateIndex = states[0](char) ? 1 : 0
+            }
+            if(currentStateIndex === pattern.length){
+                res.push({
+                    start:startIndex,
+                    end:endIndex
+                })
+                currentStateIndex = 0
+            }
+        }
+        return res
+    }
+}
+
+
+const matchABC = generatorMatchFunc('abc')
+
+ 
+let res =  matchABC('abc---abc-ababc--abc')
+
+console.log('通用版 res=>',res)
