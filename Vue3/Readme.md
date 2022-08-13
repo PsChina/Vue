@@ -100,6 +100,8 @@
 
 1. [实现解析三种联合类型template](./demos/demo41)
 
+1. [parse的实现原理&有限状态机](./demos/demo42)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
