@@ -104,6 +104,8 @@
 
 1. [实现transfrom功能](./demos/demo43)
 
+1. [实现代码生成string类型](./demos/demo44)
+
 ## Vue3源码结构的介绍
 
 Vue 模块结构
