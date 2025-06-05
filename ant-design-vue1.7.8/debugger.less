@@ -1,0 +1,12 @@
+  ::v-deep .ant-table-hide-scrollbar {
+    overflow-y: hidden !important;
+    // padding-right: 8px; /* 根据需要调整，以确保表头和内容对齐 */
+    padding-bottom: 0 !important;
+  }
+  ::v-deep .ant-table-body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  ::v-deep .ant-table-body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
